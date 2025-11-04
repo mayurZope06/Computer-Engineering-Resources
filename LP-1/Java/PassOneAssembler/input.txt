@@ -1,0 +1,16 @@
+	START	100	
+	READ	A	
+LABLE	MOVER	A,B	
+	LTORG	
+		='5'	
+		='1'	
+		='6'	
+		='7'	
+	MOVEM	A,B	
+	LTORG	
+		='2'	
+LOOP	READ	B	
+A	DS	1	
+B	DC	'1'	
+		='1'	
+	END	
