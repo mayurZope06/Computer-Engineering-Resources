@@ -39,3 +39,81 @@ int main() {
     cout << "\nAverage Turnaround Time is --- " << tatavg / n;
     return 0;
 }
+
+// OR
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter number of processes: ";
+    cin >> n;
+
+    int p[20], bt[20], at[20], pr[20], wt[20], tat[20], ct[20];
+    bool done[20] = {false};
+
+    for(int i = 0; i < n; i++) {
+        cout << "Enter Arrival Time, Burst Time, Priority for P" << i+1 << ": ";
+        cin >> at[i] >> bt[i] >> pr[i];
+        p[i] = i+1;
+    }
+
+    int completed = 0, time = 0;
+    
+    while(completed < n) {
+        int idx = -1, bestPri = 9999;
+
+        // find highest priority process that has arrived and not completed
+        for(int i = 0; i < n; i++) {
+            if(at[i] <= time && !done[i]) {
+                if(pr[i] < bestPri) {
+                    bestPri = pr[i];
+                    idx = i;
+                }
+            }
+        }
+
+        if(idx == -1) {  // no process arrived yet
+            time++;
+            continue;
+        }
+
+        time += bt[idx];       // execute full burst (non-preemptive)
+        ct[idx] = time;        // completion time
+        done[idx] = true;
+        completed++;
+    }
+
+    float avgWT = 0, avgTAT = 0;
+
+    cout << "\nProcess\tAT\tBT\tPriority\tWT\tTAT";
+    for(int i = 0; i < n; i++) {
+        tat[i] = ct[i] - at[i];         // turnaround time
+        wt[i] = tat[i] - bt[i];         // waiting time
+
+        avgWT += wt[i];
+        avgTAT += tat[i];
+
+        cout << "\nP" << p[i] << "\t" << at[i] << "\t" << bt[i] << "\t" << pr[i]
+             << "\t\t" << wt[i] << "\t" << tat[i];
+    }
+
+    cout << "\n\nAverage Waiting Time: " << avgWT/n;
+    cout << " \nAverage Turnaround Time: " << avgTAT/n;
+}
+
+// Enter number of processes: 4
+// Enter Arrival Time, Burst Time, Priority for P1: 0 10 2
+// Enter Arrival Time, Burst Time, Priority for P2: 2 5 1
+// Enter Arrival Time, Burst Time, Priority for P3: 3 2 0
+// Enter Arrival Time, Burst Time, Priority for P4: 5 20 3
+
+// Process	AT	BT	Priority	WT	TAT
+// P1	0	10	2		0	10
+// P2	2	5	1		10	15
+// P3	3	2	0		7	9
+// P4	5	20	3		12	32
+
+// Average Waiting Time: 7.25 
+// Average Turnaround Time: 16.5
