@@ -36,6 +36,10 @@ int main() {
     cout << "\nThe number of Page Faults using FIFO is " << pf << endl;
     return 0;
 }
-//15
-//7 0 1 2 0 3 0 4 2 3 0 3 2 1 0
-//3
+
+
+// Enter the length of the reference string -- 12
+
+// Enter the reference string -- 1 2 3 4 1 2 5 1 2 3 4 5
+
+// Enter the number of frames -- 3
