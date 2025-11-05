@@ -89,3 +89,14 @@ int main() {
     return 0;
 }
 
+// Enter number of blocks: 2
+// Enter block sizes:
+// Block 1: 150
+// Block 2: 350
+
+// Enter number of files: 4
+// Enter file sizes:
+// File 1: 300
+// File 2: 25
+// File 3: 125
+// File 4: 50
