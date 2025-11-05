@@ -40,3 +40,79 @@ int main() {
         cout << "\n" << i << "\t\t" << f[i] << "\t\t" << ff[i] << "\t\t" << b[ff[i]] << "\t\t" << frag[i];
     return 0;
 }
+
+// OR
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int nb, nf;
+    cout << "Enter number of blocks: ";
+    cin >> nb;
+    int block[nb], remaining[nb];
+
+    cout << "Enter block sizes:\n";
+    for(int i = 0; i < nb; i++) {
+        cout << "Block " << i+1 << ": ";
+        cin >> block[i];
+        remaining[i] = block[i];
+    }
+
+    cout << "\nEnter number of files: ";
+    cin >> nf;
+    int file[nf];
+
+    cout << "Enter file sizes:\n";
+    for(int i = 0; i < nf; i++) {
+        cout << "File " << i+1 << ": ";
+        cin >> file[i];
+    }
+
+    int alloc[nf];
+    for(int i = 0; i < nf; i++) alloc[i] = -1;
+
+    for(int i = 0; i < nf; i++) {
+        int best = -1;
+        for(int j = 0; j < nb; j++) {
+            if(remaining[j] >= file[i]) {
+                if(best == -1 || remaining[j] < remaining[best])
+                    best = j;
+            }
+        }
+        if(best != -1) {
+            alloc[i] = best;
+            remaining[best] -= file[i];
+        }
+    }
+
+    cout << "\nFile\tSize\tBlock\tRemaining Block Space\n";
+    for(int i = 0; i < nf; i++) {
+        cout << i+1 << "\t" << file[i] << "\t";
+        if(alloc[i] != -1)
+            cout << alloc[i]+1 << "\t" << remaining[alloc[i]];
+        else
+            cout << "Not Allocated\t-";
+        cout << endl;
+    }
+
+    return 0;
+}
+
+// Enter number of blocks: 2
+// Enter block sizes:
+// Block 1: 150
+// Block 2: 350
+
+// Enter number of files: 4
+// Enter file sizes:
+// File 1: 300
+// File 2: 25
+// File 3: 125
+// File 4: 50
+
+// File	Size	Block	Remaining Block Space
+// 1	        300	     2  	25
+// 2       	25	        2	25
+// 3	        125	1	25
+// 4	        50	Not Allocated	-
