@@ -138,4 +138,5 @@ int main() {
 
 // Final space left in each block:
 // Block 1: 0
-Block 2: 0
+// Block 2: 0
+
