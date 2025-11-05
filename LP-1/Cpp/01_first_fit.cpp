@@ -38,3 +38,54 @@ int main() {
         cout << "\n" << i << "\t\t" << f[i] << "\t\t" << ff[i] << "\t\t" << b[ff[i]] << "\t\t" << frag[i];
     return 0;
 }
+
+// OR
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    const int MAX = 25;
+    int b[MAX], rem[MAX], f[MAX], ff[MAX], frag[MAX];
+    int nb, nf;
+
+    cout << "Memory Management Scheme - First Fit (pack into blocks)\n";
+    cout << "Enter number of blocks: ";
+    cin >> nb;
+    cout << "Enter number of files: ";
+    cin >> nf;
+
+    cout << "Enter block sizes:\n";
+    for(int i = 0; i < nb; ++i) {
+        cout << "Block " << i+1 << ": ";
+        cin >> b[i];
+        rem[i] = b[i]; // remaining space initially equals block size
+    }
+    cout << "Enter file sizes:\n";
+    for(int i = 0; i < nf; ++i) {
+        cout << "File " << i+1 << ": ";
+        cin >> f[i];
+        ff[i] = -1;
+    }
+
+    for(int i = 0; i < nf; ++i) {
+        for(int j = 0; j < nb; ++j) {
+            if(rem[j] >= f[i]) {
+                ff[i] = j;
+                rem[j] -= f[i];
+                frag[i] = rem[j]; // remaining fragment after placing this file
+                break;
+            }
+        }
+    }
+
+    cout << "\nFile\tSize\tBlock\tBlockSize\tFragmentAfterAlloc\n";
+    for(int i = 0; i < nf; ++i) {
+        if(ff[i] != -1)
+            cout << i+1 << "\t" << f[i] << "\t" << ff[i]+1 << "\t" << b[ff[i]] << "\t\t" << frag[i] << "\n";
+        else
+            cout << i+1 << "\t" << f[i] << "\t" << "Not Allocated\n";
+    }
+    return 0;
+}
+
