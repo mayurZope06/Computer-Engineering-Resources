@@ -51,7 +51,7 @@ int main() {
     cout << "\nThe number of page faults using LRU are " << pf << endl;
     return 0;
 }
-//20
-//7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1
-//4
-//8
+
+// Enter the length of the reference string -- 20
+// Enter the reference string -- 7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1 
+// Enter the number of frames -- 4
