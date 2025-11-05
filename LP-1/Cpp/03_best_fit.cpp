@@ -116,3 +116,68 @@ int main() {
 // 2       	25	        2	25
 // 3	        125	1	25
 // 4	        50	Not Allocated	-
+
+// OR 
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int nb, nf;
+    cout << "Enter number of blocks: ";
+    cin >> nb;
+
+    int blockSize[20], blockRemain[20];
+    cout << "Enter block sizes:\n";
+    for (int i = 0; i < nb; i++) {
+        cout << "Block " << i+1 << ": ";
+        cin >> blockSize[i];
+        blockRemain[i] = blockSize[i]; // Initially full
+    }
+
+    cout << "\nEnter number of files: ";
+    cin >> nf;
+
+    int fileSize[20];
+    cout << "Enter file sizes:\n";
+    for (int i = 0; i < nf; i++) {
+        cout << "File " << i+1 << ": ";
+        cin >> fileSize[i];
+    }
+
+    int allocation[20];
+    for (int i = 0; i < nf; i++) allocation[i] = -1;
+
+    // Best Fit Allocation allowing multiple files per block
+    for (int i = 0; i < nf; i++) {
+        int bestIndex = -1;
+
+        for (int j = 0; j < nb; j++) {
+            if (blockRemain[j] >= fileSize[i]) {
+                if (bestIndex == -1 || blockRemain[j] < blockRemain[bestIndex])
+                    bestIndex = j;
+            }
+        }
+
+        if (bestIndex != -1) {
+            allocation[i] = bestIndex;
+            blockRemain[bestIndex] -= fileSize[i];
+        }
+    }
+
+    cout << "\nFile\tSize\tBlock\tRemaining Space After Allocation\n";
+    for (int i = 0; i < nf; i++) {
+        if (allocation[i] != -1)
+            cout << i+1 << "\t" << fileSize[i] << "\t" 
+                 << allocation[i]+1 << "\t" 
+                 << blockRemain[allocation[i]] << endl;
+        else
+            cout << i+1 << "\t" << fileSize[i] << "\tNot Allocated\n";
+    }
+
+    cout << "\nFinal space left in each block:\n";
+    for (int i = 0; i < nb; i++)
+        cout << "Block " << i+1 << ": " << blockRemain[i] << endl;
+
+    return 0;
+}
