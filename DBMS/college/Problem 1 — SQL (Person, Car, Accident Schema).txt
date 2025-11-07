@@ -1,0 +1,169 @@
+🧩 Problem 1 — SQL (Person, Car, Accident Schema)
+✅ 1. Create Tables with Primary & Foreign Keys
+CREATE TABLE Person (
+  driver_id INT PRIMARY KEY,
+  name VARCHAR(50),
+  address VARCHAR(100)
+);
+
+CREATE TABLE Car (
+  license VARCHAR(15) PRIMARY KEY,
+  model VARCHAR(30),
+  year INT
+);
+
+CREATE TABLE Accident (
+  report_no INT PRIMARY KEY,
+  date_acc DATE,
+  location VARCHAR(50)
+);
+
+CREATE TABLE Owns (
+  driver_id INT,
+  license VARCHAR(15),
+  PRIMARY KEY (driver_id, license),
+  FOREIGN KEY (driver_id) REFERENCES Person(driver_id),
+  FOREIGN KEY (license) REFERENCES Car(license)
+);
+
+CREATE TABLE Participated (
+  driver_id INT,
+  model VARCHAR(30),
+  report_no INT,
+  damage_amount INT,
+  FOREIGN KEY (driver_id) REFERENCES Person(driver_id),
+  FOREIGN KEY (report_no) REFERENCES Accident(report_no)
+);
+
+
+✅ 2. Insert Sample Records
+INSERT INTO Person VALUES (201, 'Raj', 'Pune');
+INSERT INTO Person VALUES (202, 'Amit', 'Nashik');
+INSERT INTO Person VALUES (203, 'Priya', 'Mumbai');
+
+INSERT INTO Car VALUES ('MH12AB1234', 'Swift', 2020);
+INSERT INTO Car VALUES ('MH14CD5678', 'i20', 2018);
+INSERT INTO Car VALUES ('MH15EF9101', 'Baleno', 2022);
+
+INSERT INTO Accident VALUES (6001, '2025-01-12', 'Pune');
+INSERT INTO Accident VALUES (6006, '2025-03-25', 'Nashik');
+
+INSERT INTO Owns VALUES (201, 'MH12AB1234');
+INSERT INTO Owns VALUES (202, 'MH14CD5678');
+INSERT INTO Owns VALUES (203, 'MH15EF9101');
+
+INSERT INTO Participated VALUES (201, 'Swift', 6001, 30000);
+INSERT INTO Participated VALUES (202, 'i20', 6006, 15000);
+INSERT INTO Participated VALUES (203, 'Baleno', 6001, 25000);
+
+
+✅ 3. Create a View – Driver_Car_View
+CREATE VIEW Driver_Car_View AS
+SELECT p.name, c.model
+FROM Person p
+JOIN Owns o ON p.driver_id = o.driver_id
+JOIN Car c ON o.license = c.license;
+
+
+✅ 4. Display All Records from the View
+SELECT * FROM Driver_Car_View;
+
+
+✅ 5. Modify the Existing View (Include Year)
+CREATE OR REPLACE VIEW Driver_Car_View AS
+SELECT p.name, c.model, c.year
+FROM Person p
+JOIN Owns o ON p.driver_id = o.driver_id
+JOIN Car c ON o.license = c.license;
+
+
+✅ 6. Create a Sequence for Report Numbers
+CREATE SEQUENCE seq_report_no START WITH 6001 INCREMENT BY 5;
+
+
+✅ 7. Composite Index on Car (model, year)
+CREATE INDEX idx_model_year ON Car(model, year);
+
+
+✅ 8. View for Drivers with Damage > ₹20,000
+CREATE VIEW HighDamageDrivers AS
+SELECT p.name, pa.damage_amount
+FROM Person p
+JOIN Participated pa ON p.driver_id = pa.driver_id
+WHERE pa.damage_amount > 20000;
+
+
+✅ 9. Sequence for Driver IDs
+CREATE SEQUENCE seq_driver_id START WITH 204 INCREMENT BY 1;
+
+
+✅ 10. Insert Record in Person using Sequence
+INSERT INTO Person VALUES (seq_driver_id.NEXTVAL, 'Karan', 'Delhi');
+
+
+✅ 11. Create Index on Person(name)
+CREATE INDEX idx_name ON Person(name);
+
+
+✅ 12. Drop that Index
+DROP INDEX idx_name;
+
+
+✅ 13. View for Accidents in 2025
+CREATE VIEW Recent_Accidents AS
+SELECT * FROM Accident
+WHERE EXTRACT(YEAR FROM date_acc) = 2025;
+
+
+✅ 14. Drop the View
+DROP VIEW Recent_Accidents;
+
+
+✅ 15. Create Synonym for Accident
+CREATE SYNONYM acc_info FOR Accident;
+
+
+✅ 16. Insert a Record Using Synonym
+INSERT INTO acc_info VALUES (seq_report_no.NEXTVAL, '2025-04-15', 'Nagpur');
+
+
+✅ 17. Create Unique Index on Car License
+CREATE UNIQUE INDEX uniq_license ON Car(license);
+
+
+✅ 18. View: Cars Manufactured After 2019
+CREATE VIEW RecentCars AS
+SELECT p.name, c.model, c.year
+FROM Person p
+JOIN Owns o ON p.driver_id = o.driver_id
+JOIN Car c ON o.license = c.license
+WHERE c.year > 2019;
+
+
+✅ 19. Synonym for Owns and List All Driver–Car Pairs
+CREATE SYNONYM owns_info FOR Owns;
+
+SELECT p.name, c.model
+FROM Person p
+JOIN owns_info o ON p.driver_id = o.driver_id
+JOIN Car c ON o.license = c.license;
+
+
+✅ 20. Create Index to Optimize Damage Queries
+CREATE INDEX idx_damage ON Participated(damage_amount);
+
+
+💡 Viva Tip:
+
+
+“A view is a virtual table derived from existing tables.”
+
+
+“A sequence auto-generates numeric values.”
+
+
+“An index improves query performance.”
+
+
+“A synonym is an alias for a table or view.”
+

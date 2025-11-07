@@ -1,0 +1,34 @@
+🧩 Problem Statement 2: SQL DDL – Table, View, Index, Sequence (AUTO_INCREMENT in MySQL), Synonym (use Alias)
+✅ Code:
+-- Drop previous objects if exist
+DROP TABLE IF EXISTS student;
+DROP VIEW IF EXISTS v_student;
+
+-- Create Table
+CREATE TABLE student (
+  roll_no INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50),
+  dept VARCHAR(20),
+  marks INT
+);
+
+-- Insert sample data
+INSERT INTO student (name, dept, marks) VALUES
+('Amit', 'CSE', 950),
+('Riya', 'IT', 880),
+('Raj', 'ENTC', 760);
+
+-- Create View
+CREATE VIEW v_student AS
+SELECT name, dept, marks FROM student;
+
+-- Create Index
+CREATE INDEX idx_dept ON student(dept);
+
+-- MySQL doesn’t support SEQUENCE natively; AUTO_INCREMENT works as a sequence.
+
+-- Synonym equivalent: Use Alias (MySQL has no CREATE SYNONYM)
+SELECT * FROM student AS stud;
+
+-- Display data from view
+SELECT * FROM v_student;

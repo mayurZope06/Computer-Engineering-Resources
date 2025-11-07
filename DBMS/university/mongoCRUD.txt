@@ -1,0 +1,654 @@
+Please enter a MongoDB connection string (Default: mongodb://localhost/): localhost
+localhost
+Current Mongosh Log ID: 68c395badaa60b4d2ecebea3
+Connecting to:          mongodb://127.0.0.1:27017/localhost?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.8
+Using MongoDB:          8.0.13
+Using Mongosh:          2.5.8
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-09-12T09:08:19.034+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+localhost> use college
+switched to db college
+college> db.createCollection("computer")
+{ ok: 1 }
+college> db.computer.insertOne( {
+... name: "mayur",
+... age: 20,
+... div: "A".
+...
+college> db.computer.insertOne( {
+... name: "mayur",
+... age: 20,
+... div: "A",
+... subject: "DBMS",
+... date: Date()
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId('68c39913daa60b4d2ecebea4')
+}
+college> db.computer.find()
+[
+  {
+    _id: ObjectId('68c39913daa60b4d2ecebea4'),
+    name: 'mayur',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: 'Fri Sep 12 2025 09:22:51 GMT+0530 (India Standard Time)'
+  }
+]
+college> db.computer.insertMany([
+... {
+... name: "xyz",
+... age: 22
+... ,
+... div: "B",
+... subject: "OS",
+... date: Date()
+... }
+... )
+
+college> db.computer.insertOne({ name: "xyz", age: 22 , div: "B", subject: "OS", date: Date() })
+{
+  acknowledged: true,
+  insertedId: ObjectId('68c39a4fdaa60b4d2ecebea5')
+}
+college> db.computer.insertMany([
+...   {
+...     name: "xyz",
+...     age: 22,
+...     div: "B",
+...     subject: "OS",
+...     date: new Date()
+...   },
+...   {
+...     name: "abc",
+...     age: 20,
+...     div: "A",
+...     subject: "DBMS",
+...     date: new Date()
+...   },
+...   {
+...     name: "pqr",
+...     age: 23,
+...     div: "C",
+...     subject: "CN",
+...     date: new Date()
+...   },
+...   {
+...     name: "lmn",
+...     age: 21,
+...     div: "B",
+...     subject: "AI",
+...     date: new Date()
+...   }
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68c39a58daa60b4d2ecebea6'),
+    '1': ObjectId('68c39a58daa60b4d2ecebea7'),
+    '2': ObjectId('68c39a58daa60b4d2ecebea8'),
+    '3': ObjectId('68c39a58daa60b4d2ecebea9')
+  }
+}
+college> db.computer.insertMany([
+...   {
+...     name: "xyz",
+...     age: 22,
+...     div: "B",
+...     subject: "OS",
+...     date: new Date()
+...   },
+...   {
+...     name: "abc",
+...     age: 20,
+...     div: "A",
+...     subject: "DBMS",
+...     date: new Date()
+...   },
+...   {
+...     name: "pqr",
+...     age: 23,
+...     div: "C",
+...     subject: "CN",
+...     date: new Date()
+...   },
+...   {
+...     name: "lmn",
+...     age: 21,
+...     div: "B",
+...     subject: "AI",
+...     date: new Date()
+...   },
+...   {
+...     name: "stu",
+...     age: 24,
+...     div: "A",
+...     subject: "ML",
+...     date: new Date()
+...   },
+...   {
+...     name: "def",
+...     age: 22,
+...     div: "C",
+...     subject: "Cyber Security",
+...     date: new Date()
+...   },
+...   {
+...     name: "ghi",
+...     age: 20,
+...     div: "B",
+...     subject: "Cloud Computing",
+...     date: new Date()
+...   },
+...   {
+...     name: "jkl",
+...     age: 23,
+...     div: "A",
+...     subject: "Web Development",
+...     date: new Date()
+...   },
+...   {
+...     name: "mno",
+...     age: 21,
+...     div: "C",
+...     subject: "Data Science",
+...     date: new Date()
+...   },
+...   {
+...     name: "rst",
+...     age: 22,
+...     div: "B",
+...     subject: "Software Engineering",
+...     date: new Date()
+...   }
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68c39a68daa60b4d2ecebeaa'),
+    '1': ObjectId('68c39a68daa60b4d2ecebeab'),
+    '2': ObjectId('68c39a68daa60b4d2ecebeac'),
+    '3': ObjectId('68c39a68daa60b4d2ecebead'),
+    '4': ObjectId('68c39a68daa60b4d2ecebeae'),
+    '5': ObjectId('68c39a68daa60b4d2ecebeaf'),
+    '6': ObjectId('68c39a68daa60b4d2ecebeb0'),
+    '7': ObjectId('68c39a68daa60b4d2ecebeb1'),
+    '8': ObjectId('68c39a68daa60b4d2ecebeb2'),
+    '9': ObjectId('68c39a68daa60b4d2ecebeb3')
+  }
+}
+college>
+college> db.college.find()
+
+college> db.computer.find()
+[
+  {
+    _id: ObjectId('68c39913daa60b4d2ecebea4'),
+    name: 'mayur',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: 'Fri Sep 12 2025 09:22:51 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('68c39a4fdaa60b4d2ecebea5'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: 'Fri Sep 12 2025 09:28:07 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea6'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: ISODate('2025-09-12T03:58:16.466Z')
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea7'),
+    name: 'abc',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: ISODate('2025-09-12T03:58:16.466Z')
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea8'),
+    name: 'pqr',
+    age: 23,
+    div: 'C',
+    subject: 'CN',
+    date: ISODate('2025-09-12T03:58:16.466Z')
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea9'),
+    name: 'lmn',
+    age: 21,
+    div: 'B',
+    subject: 'AI',
+    date: ISODate('2025-09-12T03:58:16.466Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeaa'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeab'),
+    name: 'abc',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeac'),
+    name: 'pqr',
+    age: 23,
+    div: 'C',
+    subject: 'CN',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebead'),
+    name: 'lmn',
+    age: 21,
+    div: 'B',
+    subject: 'AI',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeae'),
+    name: 'stu',
+    age: 24,
+    div: 'A',
+    subject: 'ML',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeaf'),
+    name: 'def',
+    age: 22,
+    div: 'C',
+    subject: 'Cyber Security',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb0'),
+    name: 'ghi',
+    age: 20,
+    div: 'B',
+    subject: 'Cloud Computing',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb1'),
+    name: 'jkl',
+    age: 23,
+    div: 'A',
+    subject: 'Web Development',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb2'),
+    name: 'mno',
+    age: 21,
+    div: 'C',
+    subject: 'Data Science',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb3'),
+    name: 'rst',
+    age: 22,
+    div: 'B',
+    subject: 'Software Engineering',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  }
+]
+college> db.computer.find({name: 'rst'})
+[
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb3'),
+    name: 'rst',
+    age: 22,
+    div: 'B',
+    subject: 'Software Engineering',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  }
+]
+college> db.updateOne({name: 'rst'}, {$set: {div: 'A'}
+... })
+TypeError: db.updateOne is not a function
+college> db.computer.updateOne({ name: 'rst' }, { $set: { div: 'A' } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+college> db.computer.find({name: 'rst'})
+[
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb3'),
+    name: 'rst',
+    age: 22,
+    div: 'A',
+    subject: 'Software Engineering',
+    date: ISODate('2025-09-12T03:58:32.607Z')
+  }
+]
+college> db.computer.updateMany({}, { $set: {dept: "Computer Engineering"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 16,
+  modifiedCount: 16,
+  upsertedCount: 0
+}
+college> db.computer.find({})
+[
+  {
+    _id: ObjectId('68c39913daa60b4d2ecebea4'),
+    name: 'mayur',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: 'Fri Sep 12 2025 09:22:51 GMT+0530 (India Standard Time)',
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a4fdaa60b4d2ecebea5'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: 'Fri Sep 12 2025 09:28:07 GMT+0530 (India Standard Time)',
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea6'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea7'),
+    name: 'abc',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea8'),
+    name: 'pqr',
+    age: 23,
+    div: 'C',
+    subject: 'CN',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea9'),
+    name: 'lmn',
+    age: 21,
+    div: 'B',
+    subject: 'AI',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeaa'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeab'),
+    name: 'abc',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeac'),
+    name: 'pqr',
+    age: 23,
+    div: 'C',
+    subject: 'CN',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebead'),
+    name: 'lmn',
+    age: 21,
+    div: 'B',
+    subject: 'AI',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeae'),
+    name: 'stu',
+    age: 24,
+    div: 'A',
+    subject: 'ML',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeaf'),
+    name: 'def',
+    age: 22,
+    div: 'C',
+    subject: 'Cyber Security',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb0'),
+    name: 'ghi',
+    age: 20,
+    div: 'B',
+    subject: 'Cloud Computing',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb1'),
+    name: 'jkl',
+    age: 23,
+    div: 'A',
+    subject: 'Web Development',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb2'),
+    name: 'mno',
+    age: 21,
+    div: 'C',
+    subject: 'Data Science',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb3'),
+    name: 'rst',
+    age: 22,
+    div: 'A',
+    subject: 'Software Engineering',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  }
+]
+college> db.computer.deleteOne({ name: 'rst'})
+{ acknowledged: true, deletedCount: 1 }
+college> db.computer.find({})
+[
+  {
+    _id: ObjectId('68c39913daa60b4d2ecebea4'),
+    name: 'mayur',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: 'Fri Sep 12 2025 09:22:51 GMT+0530 (India Standard Time)',
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a4fdaa60b4d2ecebea5'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: 'Fri Sep 12 2025 09:28:07 GMT+0530 (India Standard Time)',
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea6'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea7'),
+    name: 'abc',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea8'),
+    name: 'pqr',
+    age: 23,
+    div: 'C',
+    subject: 'CN',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a58daa60b4d2ecebea9'),
+    name: 'lmn',
+    age: 21,
+    div: 'B',
+    subject: 'AI',
+    date: ISODate('2025-09-12T03:58:16.466Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeaa'),
+    name: 'xyz',
+    age: 22,
+    div: 'B',
+    subject: 'OS',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeab'),
+    name: 'abc',
+    age: 20,
+    div: 'A',
+    subject: 'DBMS',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeac'),
+    name: 'pqr',
+    age: 23,
+    div: 'C',
+    subject: 'CN',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebead'),
+    name: 'lmn',
+    age: 21,
+    div: 'B',
+    subject: 'AI',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeae'),
+    name: 'stu',
+    age: 24,
+    div: 'A',
+    subject: 'ML',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeaf'),
+    name: 'def',
+    age: 22,
+    div: 'C',
+    subject: 'Cyber Security',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb0'),
+    name: 'ghi',
+    age: 20,
+    div: 'B',
+    subject: 'Cloud Computing',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb1'),
+    name: 'jkl',
+    age: 23,
+    div: 'A',
+    subject: 'Web Development',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  },
+  {
+    _id: ObjectId('68c39a68daa60b4d2ecebeb2'),
+    name: 'mno',
+    age: 21,
+    div: 'C',
+    subject: 'Data Science',
+    date: ISODate('2025-09-12T03:58:32.607Z'),
+    dept: 'Computer Engineering'
+  }
+]
+college> db.computer.deleteMany({ dept: 'Computer Engineering'})
+{ acknowledged: true, deletedCount: 15 }
+college> db.computer.find({})
+
+college>

@@ -1,0 +1,45 @@
+🧩 Problem Statement 8: Trigger – Library Audit
+✅ Code:
+DROP TABLE IF EXISTS library;
+DROP TABLE IF EXISTS library_audit;
+
+CREATE TABLE library (
+  book_id INT PRIMARY KEY,
+  title VARCHAR(50),
+  author VARCHAR(30)
+);
+
+CREATE TABLE library_audit (
+  book_id INT,
+  title VARCHAR(50),
+  author VARCHAR(30),
+  action_type VARCHAR(20),
+  action_date DATETIME
+);
+
+DELIMITER $$
+
+CREATE TRIGGER trg_library_audit
+AFTER UPDATE ON library
+FOR EACH ROW
+BEGIN
+  INSERT INTO library_audit
+  VALUES (OLD.book_id, OLD.title, OLD.author, 'UPDATED', NOW());
+END$$
+
+CREATE TRIGGER trg_library_delete
+AFTER DELETE ON library
+FOR EACH ROW
+BEGIN
+  INSERT INTO library_audit
+  VALUES (OLD.book_id, OLD.title, OLD.author, 'DELETED', NOW());
+END$$
+
+DELIMITER ;
+
+-- Insert and update
+INSERT INTO library VALUES (1, 'DBMS', 'Navathe');
+UPDATE library SET author = 'Elmasri' WHERE book_id = 1;
+DELETE FROM library WHERE book_id = 1;
+
+SELECT * FROM library_audit;

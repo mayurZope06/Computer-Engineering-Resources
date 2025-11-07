@@ -1,0 +1,70 @@
+🧮 Problem 22 – Advanced Queries on Same Schema
+
+1️⃣ Employees earning more than every employee of Small Bank Corporation
+
+SELECT employee_name 
+FROM Works 
+WHERE salary > ALL (SELECT salary FROM Works WHERE company_name='Small Bank Corporation');
+
+
+2️⃣ Companies located in every city where Small Bank Corporation is
+
+SELECT company_name 
+FROM Company c
+WHERE NOT EXISTS (
+  SELECT city FROM Company c2
+  WHERE c2.company_name='Small Bank Corporation'
+  AND NOT EXISTS (
+    SELECT * FROM Company c3 
+    WHERE c3.company_name=c.company_name AND c3.city=c2.city
+  )
+);
+
+
+3️⃣ Employees earning more than avg of their company
+
+SELECT employee_name 
+FROM Works w1
+WHERE salary > (
+  SELECT AVG(salary) FROM Works w2 
+  WHERE w1.company_name=w2.company_name
+);
+
+
+4️⃣ Company having most employees
+
+SELECT company_name 
+FROM Works 
+GROUP BY company_name 
+HAVING COUNT(employee_name) = (
+  SELECT MAX(COUNT(employee_name))
+  FROM Works GROUP BY company_name
+);
+
+
+5️⃣ Company with smallest payroll
+
+SELECT company_name 
+FROM Works 
+GROUP BY company_name 
+HAVING SUM(salary) = (
+  SELECT MIN(SUM(salary)) 
+  FROM Works GROUP BY company_name
+);
+
+
+6️⃣ Companies whose avg salary > avg salary of First Bank Corporation
+
+SELECT company_name 
+FROM Works 
+GROUP BY company_name 
+HAVING AVG(salary) > (
+  SELECT AVG(salary) 
+  FROM Works 
+  WHERE company_name='First Bank Corporation'
+);
+
+
+7️⃣ Update Jones’ city to Newtown
+
+UPDATE Employee SET city='Newtown' WHERE employee_name='Jones';
