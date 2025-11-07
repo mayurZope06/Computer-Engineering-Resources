@@ -1,0 +1,21 @@
+👨‍💼 Problem 18 – Emp, Works, Company, Manager (SQL)
+UPDATE Company SET city='Pune' WHERE cname='ABC';
+
+UPDATE Manager
+SET mgr_sal = CASE
+  WHEN mgr_sal > 20000 THEN mgr_sal * 1.03
+  ELSE mgr_sal * 1.10
+END
+WHERE mgr_id IN (
+  SELECT mgr_id FROM Company WHERE cname='Mbank'
+);
+
+SELECT e.ename
+FROM Emp e
+JOIN Works w ON e.emp_id = w.emp_id
+JOIN Company c ON w.c_id = c.c_id
+WHERE c.cname='Bosch' AND c.city='Pune';
+
+DELETE FROM Works
+WHERE c_id = (SELECT c_id FROM Company WHERE cname='SBC')
+AND sal > 50000;

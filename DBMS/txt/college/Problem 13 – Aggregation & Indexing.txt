@@ -1,0 +1,35 @@
+🧮 Problem 13 – Aggregation & Indexing
+use department;
+
+db.teacher.insertMany([
+  { name: "Amit", department: "CS", experience: 5, salary: 50000 },
+  { name: "Raj", department: "IT", experience: 6, salary: 40000 },
+  { name: "Pooja", department: "CS", experience: 4, salary: 55000 }
+]);
+
+
+1️⃣ Department-wise average salary
+
+db.teacher.aggregate([
+  { $group: { _id: "$department", avgSalary: { $avg: "$salary" } } }
+]);
+
+
+2️⃣ Number of employees per department
+
+db.teacher.aggregate([
+  { $group: { _id: "$department", count: { $sum: 1 } } }
+]);
+
+
+3️⃣ Department-wise minimum salary
+
+db.teacher.aggregate([
+  { $group: { _id: "$department", minSalary: { $min: "$salary" } } }
+]);
+
+
+4️⃣ Apply & Drop Index
+
+db.teacher.createIndex({ department: 1 });
+db.teacher.dropIndex({ department: 1 });

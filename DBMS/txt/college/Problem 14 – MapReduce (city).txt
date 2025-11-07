@@ -1,0 +1,27 @@
+🌆 Problem 14 – MapReduce (city)
+use cityDB;
+
+db.city.insertMany([
+  { city: "Pune", type: "urban", state: "MH", population: 5600000 },
+  { city: "Nashik", type: "urban", state: "MH", population: 2200000 },
+  { city: "Nagpur", type: "rural", state: "MH", population: 1500000 }
+]);
+
+
+MapReduce – Statewise population
+
+var mapFunc = function() { emit(this.state, this.population); };
+var reduceFunc = function(key, values) { return Array.sum(values); };
+db.city.mapReduce(mapFunc, reduceFunc, { out: "statewise_pop" });
+
+
+Citywise population
+
+var mapCity = function() { emit(this.city, this.population); };
+db.city.mapReduce(mapCity, reduceFunc, { out: "citywise_pop" });
+
+
+Typewise population
+
+var mapType = function() { emit(this.type, this.population); };
+db.city.mapReduce(mapType, reduceFunc, { out: "typewise_pop" });
