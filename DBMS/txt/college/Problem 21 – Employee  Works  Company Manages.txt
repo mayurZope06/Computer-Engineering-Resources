@@ -1,0 +1,102 @@
+🏢 Problem 21 – Employee / Works / Company / Manages
+✅ Create Tables
+CREATE TABLE Employee (
+  employee_name VARCHAR(50) PRIMARY KEY,
+  street VARCHAR(50),
+  city VARCHAR(50)
+);
+
+CREATE TABLE Company (
+  company_name VARCHAR(50) PRIMARY KEY,
+  city VARCHAR(50)
+);
+
+CREATE TABLE Works (
+  employee_name VARCHAR(50),
+  company_name VARCHAR(50),
+  salary DECIMAL(10,2),
+  FOREIGN KEY (employee_name) REFERENCES Employee(employee_name),
+  FOREIGN KEY (company_name) REFERENCES Company(company_name)
+);
+
+CREATE TABLE Manages (
+  employee_name VARCHAR(50),
+  manager_name VARCHAR(50)
+);
+
+✅ Insert Data
+INSERT INTO Employee VALUES ('John','MG Road','Pune');
+INSERT INTO Employee VALUES ('Amit','FC Road','Mumbai');
+INSERT INTO Employee VALUES ('Neha','Nashik Rd','Nashik');
+
+INSERT INTO Company VALUES ('First Bank Corporation','Pune');
+INSERT INTO Company VALUES ('Small Bank Corporation','Mumbai');
+
+INSERT INTO Works VALUES ('John','First Bank Corporation',12000);
+INSERT INTO Works VALUES ('Amit','Small Bank Corporation',9000);
+INSERT INTO Works VALUES ('Neha','First Bank Corporation',15000);
+
+INSERT INTO Manages VALUES ('John','Amit');
+INSERT INTO Manages VALUES ('Amit','Neha');
+
+✅ Queries
+
+1️⃣ Employees who work for First Bank Corporation
+
+SELECT employee_name 
+FROM Works 
+WHERE company_name='First Bank Corporation';
+
+
+2️⃣ Names & cities of employees working for that company
+
+SELECT e.employee_name, e.city 
+FROM Employee e 
+JOIN Works w ON e.employee_name=w.employee_name
+WHERE w.company_name='First Bank Corporation';
+
+
+3️⃣ Names, street, city for employees earning >10000 in that company
+
+SELECT e.employee_name, e.street, e.city 
+FROM Employee e
+JOIN Works w ON e.employee_name=w.employee_name
+WHERE w.company_name='First Bank Corporation' AND w.salary>10000;
+
+
+4️⃣ Employees who live in same city as company
+
+SELECT e.employee_name 
+FROM Employee e
+JOIN Works w ON e.employee_name=w.employee_name
+JOIN Company c ON w.company_name=c.company_name
+WHERE e.city=c.city;
+
+
+5️⃣ Employees who live in same city/street as their manager
+
+SELECT e.employee_name 
+FROM Employee e
+JOIN Manages m ON e.employee_name=m.employee_name
+JOIN Employee m1 ON m.manager_name=m1.employee_name
+WHERE e.city=m1.city AND e.street=m1.street;
+
+
+6️⃣ Employees not working for First Bank Corporation
+
+SELECT employee_name 
+FROM Works 
+WHERE company_name <> 'First Bank Corporation';
+
+
+7️⃣ Give 10% raise to employees of First Bank Corporation
+
+UPDATE Works 
+SET salary = salary * 1.10
+WHERE company_name='First Bank Corporation';
+
+
+8️⃣ Delete Works entries for Small Bank Corporation
+
+DELETE FROM Works 
+WHERE company_name='Small Bank Corporation';

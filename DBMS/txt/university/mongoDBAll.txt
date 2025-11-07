@@ -1,0 +1,272 @@
+ 🧩 Problem 1: Study of Open Source NoSQL Database – MongoDB
+✅ Aim:
+
+To study installation steps and perform basic CRUD operations in MongoDB.
+
+✅ Installation Steps (Summary):
+
+Download MongoDB Community Server from
+👉 https://www.mongodb.com/try/download/community
+
+Install and start MongoDB service (mongod).
+
+Open Mongo Shell (mongosh) or MongoDB Compass GUI.
+
+Verify installation:
+
+mongosh
+> show dbs
+
+✅ Basic CRUD Execution Example
+// Create / switch to a database
+use CollegeDB
+
+// Create a collection & Insert Documents
+db.Student.insertMany([
+  { Roll: 1, Name: "Amit", Dept: "CSE", Marks: 950 },
+  { Roll: 2, Name: "Riya", Dept: "IT", Marks: 870 },
+  { Roll: 3, Name: "Raj", Dept: "ENTC", Marks: 760 }
+])
+
+// Read (Retrieve)
+db.Student.find()
+
+// Update
+db.Student.updateOne({ Roll: 3 }, { $set: { Marks: 800 } })
+
+// Delete
+db.Student.deleteOne({ Roll: 2 })
+
+// Verify
+db.Student.find()
+
+🧩 Problem 2: Design and Develop MongoDB Queries using CRUD Operations (SAVE method & Logical Operators)
+✅ Code:
+use CollegeDB
+
+// INSERT
+db.Employee.insertMany([
+  { EmpID: 1, Name: "Neha", Dept: "HR", Salary: 35000 },
+  { EmpID: 2, Name: "Amit", Dept: "IT", Salary: 45000 },
+  { EmpID: 3, Name: "Raj", Dept: "Accounts", Salary: 25000 }
+])
+
+// READ
+db.Employee.find()
+
+// UPDATE (increment salary)
+db.Employee.updateOne({ EmpID: 3 }, { $inc: { Salary: 5000 } })
+
+// DELETE
+db.Employee.deleteOne({ EmpID: 1 })
+
+// SAVE method (insert if not exists, replace if exists)
+db.Employee.save({ EmpID: 4, Name: "Riya", Dept: "IT", Salary: 42000 })
+
+// Logical Operators
+db.Employee.find({
+  $or: [{ Dept: "IT" }, { Salary: { $gt: 40000 } }]
+})
+
+🧩 Problem 3: Implement Aggregation and Indexing
+✅ Code:
+use CollegeDB
+
+// Sample Data
+db.Sales.insertMany([
+  { Item: "Pen", Qty: 10, Price: 20 },
+  { Item: "Book", Qty: 5, Price: 100 },
+  { Item: "Bag", Qty: 2, Price: 500 },
+  { Item: "Pen", Qty: 15, Price: 20 }
+])
+
+// Aggregation Example: total quantity sold per item
+db.Sales.aggregate([
+  { $group: { _id: "$Item", totalQty: { $sum: "$Qty" }, totalSales: { $sum: { $multiply: ["$Qty", "$Price"] } } } }
+])
+
+// Create Index on Item field
+db.Sales.createIndex({ Item: 1 })
+
+// View all indexes
+db.Sales.getIndexes()
+
+🧩 Problem 4: Implement Map-Reduce Operation
+✅ Code:
+use CollegeDB
+
+// Sample collection
+db.Marks.insertMany([
+  { Name: "Amit", Subject: "DBMS", Marks: 85 },
+  { Name: "Riya", Subject: "DBMS", Marks: 90 },
+  { Name: "Amit", Subject: "CN", Marks: 80 },
+  { Name: "Riya", Subject: "CN", Marks: 70 }
+])
+
+// Define Map & Reduce functions
+var mapFunction = function() {
+  emit(this.Name, this.Marks);
+};
+
+var reduceFunction = function(key, values) {
+  return Array.avg(values);
+};
+
+// Execute MapReduce
+db.Marks.mapReduce(mapFunction, reduceFunction, { out: "AvgMarks" })
+
+// View Output
+db.AvgMarks.find()
+
+🧩 Problem 5: Design and Implement any 5 MongoDB Queries
+✅ Code:
+use CollegeDB
+
+db.Student.insertMany([
+  { Roll: 1, Name: "Amit", Marks: 950 },
+  { Roll: 2, Name: "Riya", Marks: 870 },
+  { Roll: 3, Name: "Raj", Marks: 780 },
+  { Roll: 4, Name: "Neha", Marks: 650 }
+])
+
+// 1️⃣ Display all documents
+db.Student.find()
+
+// 2️⃣ Display students having marks greater than 800
+db.Student.find({ Marks: { $gt: 800 } })
+
+// 3️⃣ Sort by Marks descending
+db.Student.find().sort({ Marks: -1 })
+
+// 4️⃣ Count total students
+db.Student.countDocuments()
+
+// 5️⃣ Update all marks by adding 10
+db.Student.updateMany({}, { $inc: { Marks: 10 } })
+
+✅ Summary Table
+Problem No	Topic	Key MongoDB Concepts Used
+1	Basic CRUD	insert, find, updateOne, deleteOne
+2	CRUD + SAVE + Logical	save, $or, $inc
+3	Aggregation + Indexing	$group, $sum, $multiply, createIndex
+4	MapReduce	mapReduce(), emit, reduce
+5	5 Queries	Basic query practice
+
+
+
+
+1️⃣ MongoDB Installation & Basic CRUD (Independent)
+// Use a fresh database
+use mongoPrac1
+
+// Create collection and insert documents
+db.employees.insertMany([
+    {emp_id: 1, name: "Amit", dept: "IT", salary: 50000},
+    {emp_id: 2, name: "Priya", dept: "HR", salary: 60000},
+    {emp_id: 3, name: "Rohan", dept: "Sales", salary: 55000}
+]);
+
+// Read - display all documents
+db.employees.find().pretty()
+
+// Update - Increase salary of emp_id 3
+db.employees.updateOne({emp_id: 3}, {$set: {salary: 58000}})
+
+// Delete - Remove employee emp_id 1
+db.employees.deleteOne({emp_id: 1})
+
+2️⃣ CRUD with SAVE and Logical Operators
+// Use a fresh database
+use mongoPrac2
+
+// Insert documents using save()
+db.products.save({prod_id: 1, name: "Laptop", price: 80000})
+db.products.save({prod_id: 2, name: "Mouse", price: 500})
+db.products.save({prod_id: 3, name: "Keyboard", price: 1200})
+
+// Query using logical operators
+db.products.find({$and: [{price: {$gt: 1000}}, {name: /a/i}]}).pretty()
+db.products.find({$or: [{price: {$lt: 2000}}, {name: /Laptop/}]}).pretty()
+
+// Update multiple documents - Increase price by 100 for price < 2000
+db.products.updateMany({price: {$lt: 2000}}, {$inc: {price: 100}})
+
+3️⃣ Aggregation and Indexing
+// Use a fresh database
+use mongoPrac3
+
+// Insert collection
+db.sales.insertMany([
+    {order_id: 1, product: "Pen", qty: 10, price: 5},
+    {order_id: 2, product: "Notebook", qty: 5, price: 50},
+    {order_id: 3, product: "Eraser", qty: 20, price: 2},
+    {order_id: 4, product: "Pen", qty: 15, price: 5}
+]);
+
+// Create index on product
+db.sales.createIndex({product: 1})
+
+// Aggregation - Total quantity per product
+db.sales.aggregate([
+    {$group: {_id: "$product", totalQty: {$sum: "$qty"}}}
+]).pretty()
+
+// Aggregation - Total sales amount per product
+db.sales.aggregate([
+    {$group: {_id: "$product", totalAmount: {$sum: {$multiply: ["$qty", "$price"]}}}}
+]).pretty()
+
+4️⃣ MapReduce Example
+// Use a fresh database
+use mongoPrac4
+
+// Insert collection
+db.orders.insertMany([
+    {order_id: 1, category: "Electronics", amount: 5000},
+    {order_id: 2, category: "Clothing", amount: 2000},
+    {order_id: 3, category: "Electronics", amount: 3000},
+    {order_id: 4, category: "Groceries", amount: 1500}
+]);
+
+// Map function
+var mapFunc = function() {
+    emit(this.category, this.amount);
+};
+
+// Reduce function
+var reduceFunc = function(key, values) {
+    return Array.sum(values);
+};
+
+// Execute MapReduce
+db.orders.mapReduce(mapFunc, reduceFunc, {out: "categoryTotal"})
+
+// View result
+db.categoryTotal.find().pretty()
+
+5️⃣ Five Independent Queries
+// Use a fresh database
+use mongoPrac5
+
+// Insert collection
+db.books.insertMany([
+    {book_id: 1, title: "DBMS", price: 500},
+    {book_id: 2, title: "OS", price: 450},
+    {book_id: 3, title: "CN", price: 400},
+    {book_id: 4, title: "AI", price: 1000}
+]);
+
+// Query 1: Find books with price > 450
+db.books.find({price: {$gt: 450}}).pretty()
+
+// Query 2: Find books with title starting with 'C'
+db.books.find({title: /^C/}).pretty()
+
+// Query 3: Update - Increase price by 50 for books price < 500
+db.books.updateMany({price: {$lt: 500}}, {$inc: {price: 50}})
+
+// Query 4: Delete - Remove books with price > 900
+db.books.deleteMany({price: {$gt: 900}})
+
+// Query 5: Sort books by price ascending
+db.books.find().sort({price: 1}).pretty()

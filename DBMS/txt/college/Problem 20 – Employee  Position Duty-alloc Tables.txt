@@ -1,0 +1,72 @@
+🧾 Problem 20 – Employee / Position / Duty-alloc Tables
+🎯 Objective
+
+Perform queries on employee duty allocations using joins, subqueries, and views.
+
+✅ 1️⃣ Create Tables
+CREATE TABLE Empl (
+  e_no INT PRIMARY KEY,
+  e_name VARCHAR(50),
+  post VARCHAR(30),
+  pay_rate DECIMAL(10,2)
+);
+
+CREATE TABLE Position (
+  pos_no INT PRIMARY KEY,
+  post VARCHAR(30)
+);
+
+CREATE TABLE Duty_alloc (
+  pos_no INT,
+  e_no INT,
+  month VARCHAR(15),
+  year INT,
+  shift VARCHAR(20),
+  FOREIGN KEY (pos_no) REFERENCES Position(pos_no),
+  FOREIGN KEY (e_no) REFERENCES Empl(e_no)
+);
+
+✅ 2️⃣ Insert Sample Data
+INSERT INTO Empl VALUES (123, 'Ravi', 'Manager', 25000);
+INSERT INTO Empl VALUES (124, 'Amit', 'Clerk', 18000);
+INSERT INTO Empl VALUES (125, 'Neha', 'Manager', 27000);
+
+INSERT INTO Position VALUES (1, 'Manager');
+INSERT INTO Position VALUES (2, 'Clerk');
+
+INSERT INTO Duty_alloc VALUES (1, 123, 'April', 2003, 'First');
+INSERT INTO Duty_alloc VALUES (2, 124, 'April', 2003, 'Second');
+INSERT INTO Duty_alloc VALUES (1, 125, 'April', 2003, 'First');
+
+✅ 3️⃣ Queries
+
+i. Duty allocation for e_no 123, first shift, April 2003
+
+SELECT * FROM Duty_alloc
+WHERE e_no = 123 AND shift='First' AND month='April' AND year=2003;
+
+
+ii. Employees whose pay ≥ pay of ‘Sachin’
+
+SELECT * 
+FROM Empl 
+WHERE pay_rate >= (SELECT pay_rate FROM Empl WHERE e_name='Sachin');
+
+
+iii. View – min, max, avg salary for each post
+
+CREATE VIEW Post_Salary_View AS
+SELECT post, MIN(pay_rate) AS MinPay,
+       MAX(pay_rate) AS MaxPay,
+       AVG(pay_rate) AS AvgPay
+FROM Empl
+GROUP BY post;
+
+
+iv. Count of employees per shift having post ‘Manager’
+
+SELECT d.shift, COUNT(e.e_no) AS EmpCount
+FROM Duty_alloc d
+JOIN Empl e ON d.e_no = e.e_no
+WHERE e.post='Manager'
+GROUP BY d.shift;

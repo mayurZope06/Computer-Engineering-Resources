@@ -1,0 +1,173 @@
+📚 Problem 4 – Borrower & Fine Tables
+🎯 Objective:
+
+Accept roll_no & book name from user.
+
+If book submitted between 15–30 days → ₹5/day fine
+
+If >30 days → ₹50/day fine
+
+Else → no fine
+
+Update Status from 'I' (Issued) → 'R' (Returned)
+
+Insert fine details into Fine table.
+
+✅ 1. Create Tables
+CREATE TABLE Borrower (
+  Rollin INT,
+  Name VARCHAR(50),
+  DateofIssue DATE,
+  NameofBook VARCHAR(50),
+  Status CHAR(1)
+);
+
+CREATE TABLE Fine (
+  Roll_no INT,
+  FineDate DATE,
+  Amt NUMBER(10,2)
+);
+
+✅ 2. Insert Sample Data
+INSERT INTO Borrower VALUES (1, 'Amit', '2025-10-01', 'DBMS', 'I');
+INSERT INTO Borrower VALUES (2, 'Pooja', '2025-09-25', 'OS', 'I');
+INSERT INTO Borrower VALUES (3, 'Raj', '2025-10-20', 'CN', 'I');
+COMMIT;
+
+✅ 3. PL/SQL Block
+DECLARE
+    v_roll Borrower.Rollin%TYPE;
+    v_book Borrower.NameofBook%TYPE;
+    v_issue Borrower.DateofIssue%TYPE;
+    v_days NUMBER;
+    v_fine NUMBER := 0;
+BEGIN
+    -- Accept input
+    v_roll := &roll_no;
+    v_book := '&book_name';
+
+    -- Get issue date
+    SELECT DateofIssue INTO v_issue 
+    FROM Borrower 
+    WHERE Rollin = v_roll AND NameofBook = v_book;
+
+    -- Calculate number of days
+    v_days := TRUNC(SYSDATE - v_issue);
+
+    -- Fine calculation
+    IF v_days > 30 THEN
+        v_fine := (v_days * 50);
+    ELSIF v_days BETWEEN 15 AND 30 THEN
+        v_fine := (v_days * 5);
+    ELSE
+        v_fine := 0;
+    END IF;
+
+    -- Update status
+    UPDATE Borrower SET Status = 'R' 
+    WHERE Rollin = v_roll AND NameofBook = v_book;
+
+    -- Insert fine record if applicable
+    IF v_fine > 0 THEN
+        INSERT INTO Fine VALUES (v_roll, SYSDATE, v_fine);
+        DBMS_OUTPUT.PUT_LINE('Fine of Rs. ' || v_fine || ' imposed.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('No fine.');
+    END IF;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Record not found.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Unexpected error occurred.');
+END;
+/
+
+✅ 4. Check Results
+SELECT * FROM Borrower;
+SELECT * FROM Fine;
+
+💡 Viva Tips
+
+TRUNC(SYSDATE - DateofIssue) gives days difference.
+
+'I' → Issued, 'R' → Returned.
+
+IF…ELSIF…ELSE shows control structure.
+
+Exception handling → NO_DATA_FOUND, OTHERS.
+
+Fine logic tested with date difference.
+
+
+
+
+
+
+
+
+
+
+✅ Create Tables
+CREATE TABLE Borrower (
+  Rollin INT,
+  Name VARCHAR(50),
+  DateofIssue DATE,
+  NameofBook VARCHAR(50),
+  Status CHAR(1)
+);
+
+CREATE TABLE Fine (
+  Roll_no INT,
+  FineDate DATE,
+  Amt DECIMAL(10,2)
+);
+
+INSERT INTO Borrower VALUES 
+(1, 'Amit', '2025-10-01', 'DBMS', 'I'),
+(2, 'Pooja', '2025-09-25', 'OS', 'I'),
+(3, 'Raj', '2025-10-20', 'CN', 'I');
+
+✅ Stored Procedure (MySQL Equivalent)
+DELIMITER $$
+
+CREATE PROCEDURE CheckFine(IN roll_no INT, IN book_name VARCHAR(50))
+BEGIN
+    DECLARE v_issue DATE;
+    DECLARE v_days INT;
+    DECLARE v_fine DECIMAL(10,2) DEFAULT 0;
+
+    -- Get issue date
+    SELECT DateofIssue INTO v_issue
+    FROM Borrower
+    WHERE Rollin = roll_no AND NameofBook = book_name;
+
+    SET v_days = DATEDIFF(CURDATE(), v_issue);
+
+    IF v_days > 30 THEN
+        SET v_fine = v_days * 50;
+    ELSEIF v_days BETWEEN 15 AND 30 THEN
+        SET v_fine = v_days * 5;
+    ELSE
+        SET v_fine = 0;
+    END IF;
+
+    UPDATE Borrower SET Status = 'R'
+    WHERE Rollin = roll_no AND NameofBook = book_name;
+
+    IF v_fine > 0 THEN
+        INSERT INTO Fine VALUES (roll_no, CURDATE(), v_fine);
+        SELECT CONCAT('Fine of Rs. ', v_fine, ' imposed.') AS Message;
+    ELSE
+        SELECT 'No fine.' AS Message;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+✅ To Run:
+
+CALL CheckFine(1, 'DBMS');
+SELECT * FROM Borrower;
+SELECT * FROM Fine;

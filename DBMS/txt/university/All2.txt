@@ -1,0 +1,373 @@
+🧩 Problem Statement 2: SQL DDL – Table, View, Index, Sequence (AUTO_INCREMENT in MySQL), Synonym (use Alias)
+✅ Code:
+-- Drop previous objects if exist
+DROP TABLE IF EXISTS student;
+DROP VIEW IF EXISTS v_student;
+
+-- Create Table
+CREATE TABLE student (
+  roll_no INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50),
+  dept VARCHAR(20),
+  marks INT
+);
+
+-- Insert sample data
+INSERT INTO student (name, dept, marks) VALUES
+('Amit', 'CSE', 950),
+('Riya', 'IT', 880),
+('Raj', 'ENTC', 760);
+
+-- Create View
+CREATE VIEW v_student AS
+SELECT name, dept, marks FROM student;
+
+-- Create Index
+CREATE INDEX idx_dept ON student(dept);
+
+-- MySQL doesn’t support SEQUENCE natively; AUTO_INCREMENT works as a sequence.
+
+-- Synonym equivalent: Use Alias (MySQL has no CREATE SYNONYM)
+SELECT * FROM student AS stud;
+
+-- Display data from view
+SELECT * FROM v_student;
+
+🧩 Problem Statement 3: SQL DML – Insert, Select, Update, Delete with Operators, Functions, Set Operators
+✅ Code:
+DROP TABLE IF EXISTS student;
+CREATE TABLE student (
+  roll_no INT PRIMARY KEY,
+  name VARCHAR(50),
+  dept VARCHAR(20),
+  marks INT
+);
+
+-- Insert
+INSERT INTO student VALUES
+(101, 'Amit', 'CSE', 950),
+(102, 'Riya', 'IT', 880),
+(103, 'Neha', 'CSE', 990),
+(104, 'Raj', 'ENTC', 760),
+(105, 'Sam', 'MECH', 640);
+
+-- 1. Display all
+SELECT * FROM student;
+
+-- 2. Update
+UPDATE student SET marks = marks + 10 WHERE dept = 'CSE';
+
+-- 3. Delete
+DELETE FROM student WHERE roll_no = 105;
+
+-- 4. WHERE with condition
+SELECT * FROM student WHERE marks > 800;
+
+-- 5. IN operator
+SELECT * FROM student WHERE dept IN ('CSE', 'IT');
+
+-- 6. LIKE operator
+SELECT * FROM student WHERE name LIKE 'R%';
+
+-- 7. UPPER function
+SELECT UPPER(name) AS upper_name FROM student;
+
+-- 8. LENGTH function
+SELECT name, LENGTH(name) AS name_length FROM student;
+
+-- 9. Set operator (UNION)
+SELECT dept FROM student WHERE marks > 800
+UNION
+SELECT dept FROM student WHERE marks < 700;
+
+-- 10. ORDER BY
+SELECT * FROM student ORDER BY marks DESC;
+
+🧩 Problem Statement 4: SQL DML – Joins, Subquery, View
+✅ Code:
+DROP TABLE IF EXISTS student;
+DROP TABLE IF EXISTS department;
+
+CREATE TABLE student (
+  roll_no INT PRIMARY KEY,
+  name VARCHAR(50),
+  dept_id INT,
+  marks INT
+);
+
+CREATE TABLE department (
+  dept_id INT PRIMARY KEY,
+  dept_name VARCHAR(30),
+  location VARCHAR(30)
+);
+
+-- Insert data
+INSERT INTO department VALUES
+(1, 'CSE', 'Block A'),
+(2, 'IT', 'Block B'),
+(3, 'ENTC', 'Block C');
+
+INSERT INTO student VALUES
+(101, 'Amit', 1, 950),
+(102, 'Riya', 2, 880),
+(103, 'Raj', 3, 760),
+(104, 'Neha', 1, 990);
+
+-- 1. INNER JOIN
+SELECT s.name, d.dept_name, d.location
+FROM student s
+INNER JOIN department d ON s.dept_id = d.dept_id;
+
+-- 2. LEFT JOIN
+SELECT s.name, d.location
+FROM student s LEFT JOIN department d ON s.dept_id = d.dept_id;
+
+-- 3. RIGHT JOIN
+SELECT s.name, d.location
+FROM student s RIGHT JOIN department d ON s.dept_id = d.dept_id;
+
+-- 4. CROSS JOIN
+SELECT s.name, d.dept_name FROM student s CROSS JOIN department d;
+
+-- 5. Subquery: above average
+SELECT * FROM student
+WHERE marks > (SELECT AVG(marks) FROM student);
+
+-- 6. Subquery with IN
+SELECT * FROM student
+WHERE dept_id IN (SELECT dept_id FROM department WHERE location='Block A');
+
+-- 7. Create View
+CREATE VIEW v_stud_dept AS
+SELECT s.name, s.marks, d.location
+FROM student s JOIN department d ON s.dept_id = d.dept_id;
+
+-- 8. Select from view
+SELECT * FROM v_stud_dept;
+
+-- 9. Topper
+SELECT name, marks FROM student
+WHERE marks = (SELECT MAX(marks) FROM student);
+
+-- 10. Students from specific departments
+SELECT name FROM student WHERE dept_id IN (1, 2);
+
+🧩 Problem Statement 5: PL/SQL Block Equivalent (MySQL Control Structure & Exception Handling)
+
+MySQL uses stored procedures for control flow and handlers.
+
+✅ Code:
+DELIMITER $$
+
+CREATE PROCEDURE check_grade(IN marks INT)
+BEGIN
+  DECLARE grade VARCHAR(20);
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SELECT 'Error occurred!' AS Message;
+  END;
+
+  IF marks >= 900 THEN
+    SET grade = 'Distinction';
+  ELSEIF marks >= 800 THEN
+    SET grade = 'First Class';
+  ELSEIF marks >= 700 THEN
+    SET grade = 'Second Class';
+  ELSE
+    SET grade = 'Fail';
+  END IF;
+
+  SELECT CONCAT('Grade: ', grade) AS Result;
+END$$
+
+DELIMITER ;
+
+-- Execute
+CALL check_grade(850);
+
+🧩 Problem Statement 6: Stored Procedure – Student Grade Categorization
+✅ Code:
+DROP TABLE IF EXISTS stud_marks;
+DROP TABLE IF EXISTS result;
+
+CREATE TABLE stud_marks (
+  roll INT PRIMARY KEY,
+  name VARCHAR(30),
+  total_marks INT
+);
+
+CREATE TABLE result (
+  roll INT,
+  name VARCHAR(30),
+  class VARCHAR(30)
+);
+
+INSERT INTO stud_marks VALUES
+(1, 'Amit', 1450),
+(2, 'Riya', 950),
+(3, 'Raj', 870),
+(4, 'Neha', 810);
+
+DELIMITER $$
+
+CREATE PROCEDURE proc_grade()
+BEGIN
+  DECLARE done INT DEFAULT 0;
+  DECLARE r INT;
+  DECLARE n VARCHAR(30);
+  DECLARE m INT;
+  DECLARE category VARCHAR(30);
+
+  DECLARE cur CURSOR FOR SELECT roll, name, total_marks FROM stud_marks;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+  OPEN cur;
+  read_loop: LOOP
+    FETCH cur INTO r, n, m;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+
+    IF m BETWEEN 990 AND 1500 THEN
+      SET category = 'Distinction';
+    ELSEIF m BETWEEN 900 AND 989 THEN
+      SET category = 'First Class';
+    ELSEIF m BETWEEN 825 AND 899 THEN
+      SET category = 'Higher Second Class';
+    ELSE
+      SET category = 'Fail';
+    END IF;
+
+    INSERT INTO result VALUES (r, n, category);
+  END LOOP;
+  CLOSE cur;
+END$$
+
+DELIMITER ;
+
+-- Execute
+CALL proc_grade();
+SELECT * FROM result;
+
+🧩 Problem Statement 7: Parameterized Cursor (MySQL Equivalent)
+✅ Code:
+DROP TABLE IF EXISTS o_rollcall;
+DROP TABLE IF EXISTS n_rollcall;
+
+CREATE TABLE o_rollcall (roll_no INT PRIMARY KEY, name VARCHAR(30));
+CREATE TABLE n_rollcall (roll_no INT PRIMARY KEY, name VARCHAR(30));
+
+INSERT INTO o_rollcall VALUES (1, 'Amit'), (2, 'Riya');
+INSERT INTO n_rollcall VALUES (2, 'Riya'), (3, 'Raj');
+
+DELIMITER $$
+
+CREATE PROCEDURE merge_rollcall()
+BEGIN
+  DECLARE done INT DEFAULT 0;
+  DECLARE r INT;
+  DECLARE n VARCHAR(30);
+  DECLARE v_count INT;
+
+  DECLARE cur CURSOR FOR SELECT roll_no, name FROM n_rollcall;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+  OPEN cur;
+  read_loop: LOOP
+    FETCH cur INTO r, n;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+
+    SELECT COUNT(*) INTO v_count FROM o_rollcall WHERE roll_no = r;
+    IF v_count = 0 THEN
+      INSERT INTO o_rollcall VALUES (r, n);
+    END IF;
+  END LOOP;
+  CLOSE cur;
+END$$
+
+DELIMITER ;
+
+-- Execute
+CALL merge_rollcall();
+SELECT * FROM o_rollcall;
+
+🧩 Problem Statement 8: Trigger – Library Audit
+✅ Code:
+DROP TABLE IF EXISTS library;
+DROP TABLE IF EXISTS library_audit;
+
+CREATE TABLE library (
+  book_id INT PRIMARY KEY,
+  title VARCHAR(50),
+  author VARCHAR(30)
+);
+
+CREATE TABLE library_audit (
+  book_id INT,
+  title VARCHAR(50),
+  author VARCHAR(30),
+  action_type VARCHAR(20),
+  action_date DATETIME
+);
+
+DELIMITER $$
+
+CREATE TRIGGER trg_library_audit
+AFTER UPDATE ON library
+FOR EACH ROW
+BEGIN
+  INSERT INTO library_audit
+  VALUES (OLD.book_id, OLD.title, OLD.author, 'UPDATED', NOW());
+END$$
+
+CREATE TRIGGER trg_library_delete
+AFTER DELETE ON library
+FOR EACH ROW
+BEGIN
+  INSERT INTO library_audit
+  VALUES (OLD.book_id, OLD.title, OLD.author, 'DELETED', NOW());
+END$$
+
+DELIMITER ;
+
+-- Insert and update
+INSERT INTO library VALUES (1, 'DBMS', 'Navathe');
+UPDATE library SET author = 'Elmasri' WHERE book_id = 1;
+DELETE FROM library WHERE book_id = 1;
+
+SELECT * FROM library_audit;
+
+🧩 Problem Statement 9–13: MongoDB (use in Mongo Shell)
+✅ MongoDB Code:
+// 9. Create DB & Collection
+use CollegeDB
+db.Student.insertMany([
+  {Roll: 1, Name: "Amit", Marks: 950},
+  {Roll: 2, Name: "Riya", Marks: 870}
+])
+db.Student.find()
+
+// 10. CRUD + Logical Operators
+db.Student.insertOne({Roll:3, Name:"Raj", Marks:880})
+db.Student.updateOne({Roll:1}, {$set:{Marks:970}})
+db.Student.deleteOne({Roll:2})
+db.Student.find({$or:[{Marks:{$gt:900}}, {Name:"Raj"}]})
+
+// 11. Aggregation & Index
+db.Student.aggregate([{$group:{_id:null, avgMarks:{$avg:"$Marks"}}}])
+db.Student.createIndex({Marks:1})
+
+// 12. MapReduce
+var map = function() { emit(this.Name, this.Marks); };
+var reduce = function(key, values) { return Array.sum(values); };
+db.Student.mapReduce(map, reduce, {out:"TotalMarks"});
+db.TotalMarks.find()
+
+// 13. 5 Queries
+db.Student.find({Marks:{$gt:850}})
+db.Student.find({Name:/A/})
+db.Student.find().sort({Marks:-1})
+db.Student.countDocuments()
+db.Student.updateMany({}, {$inc:{Marks:5}})

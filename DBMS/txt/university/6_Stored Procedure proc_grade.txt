@@ -1,0 +1,63 @@
+🧩 Problem Statement 6: Stored Procedure – Student Grade Categorization
+✅ Code:
+DROP TABLE IF EXISTS stud_marks;
+DROP TABLE IF EXISTS result;
+
+CREATE TABLE stud_marks (
+  roll INT PRIMARY KEY,
+  name VARCHAR(30),
+  total_marks INT
+);
+
+CREATE TABLE result (
+  roll INT,
+  name VARCHAR(30),
+  class VARCHAR(30)
+);
+
+INSERT INTO stud_marks VALUES
+(1, 'Amit', 1450),
+(2, 'Riya', 950),
+(3, 'Raj', 870),
+(4, 'Neha', 810);
+
+DELIMITER $$
+
+CREATE PROCEDURE proc_grade()
+BEGIN
+  DECLARE done INT DEFAULT 0;
+  DECLARE r INT;
+  DECLARE n VARCHAR(30);
+  DECLARE m INT;
+  DECLARE category VARCHAR(30);
+
+  DECLARE cur CURSOR FOR SELECT roll, name, total_marks FROM stud_marks;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+  OPEN cur;
+  read_loop: LOOP
+    FETCH cur INTO r, n, m;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+
+    IF m BETWEEN 990 AND 1500 THEN
+      SET category = 'Distinction';
+    ELSEIF m BETWEEN 900 AND 989 THEN
+      SET category = 'First Class';
+    ELSEIF m BETWEEN 825 AND 899 THEN
+      SET category = 'Higher Second Class';
+    ELSE
+      SET category = 'Fail';
+    END IF;
+
+    INSERT INTO result VALUES (r, n, category);
+  END LOOP;
+  CLOSE cur;
+END$$
+
+DELIMITER ;
+
+-- Execute
+CALL proc_grade();
+SELECT * FROM result;
