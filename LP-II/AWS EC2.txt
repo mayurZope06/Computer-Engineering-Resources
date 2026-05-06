@@ -1,0 +1,37 @@
+✅ Now What To Do Next (Simple Step-by-Step)
+1. Update your system
+sudo dnf update -y
+2. Install basic packages
+sudo dnf install git wget unzip -y
+3. Install a web server (Apache)
+sudo dnf install httpd -y
+
+Start it:
+
+sudo systemctl start httpd
+
+Enable auto-start:
+
+sudo systemctl enable httpd
+
+6. Upload your project (optional)
+
+Go to web folder:
+
+cd /var/www/html
+
+Create a test file:
+
+echo "Hello from EC2" | sudo tee index.html
+
+Refresh your browser → You’ll see your message
+
+🟡 What You Just Did
+Launched EC2 instance ✅
+Connected via browser terminal ✅
+Installed server ✅
+Hosted a website ✅
+
+
+
+https://chatgpt.com/share/69f9e606-9554-8324-9557-104684d4b8ff
