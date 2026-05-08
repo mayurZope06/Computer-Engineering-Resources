@@ -1,0 +1,172 @@
+LogAnalysis.java
+
+import java.io.IOException;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class LogAnalysis {
+
+    // ------------------------------------------------
+    // Mapper Class
+    // ------------------------------------------------
+
+    public static class LogMapper
+            extends Mapper<Object, Text, Text, IntWritable> {
+
+        private final static IntWritable one = new IntWritable(1);
+
+        private Text error = new Text("ERROR");
+
+        public void map(
+                Object key,
+                Text value,
+                Context context
+        ) throws IOException, InterruptedException {
+
+            String line = value.toString();
+
+            if (line.contains("ERROR")) {
+
+                context.write(error, one);
+            }
+        }
+    }
+
+    // ------------------------------------------------
+    // Reducer Class
+    // ------------------------------------------------
+
+    public static class LogReducer
+            extends Reducer<Text, IntWritable, Text, IntWritable> {
+
+        private IntWritable result = new IntWritable();
+
+        public void reduce(
+                Text key,
+                Iterable<IntWritable> values,
+                Context context
+        ) throws IOException, InterruptedException {
+
+            int sum = 0;
+
+            for (IntWritable val : values) {
+
+                sum += val.get();
+            }
+
+            result.set(sum);
+
+            context.write(key, result);
+        }
+    }
+
+    // ------------------------------------------------
+    // Main Function
+    // ------------------------------------------------
+
+    public static void main(String[] args)
+            throws Exception {
+
+        Configuration conf = new Configuration();
+
+        Job job = Job.getInstance(conf, "log analysis");
+
+        job.setJarByClass(LogAnalysis.class);
+
+        job.setMapperClass(LogMapper.class);
+
+        job.setCombinerClass(LogReducer.class);
+
+        job.setReducerClass(LogReducer.class);
+
+        job.setOutputKeyClass(Text.class);
+
+        job.setOutputValueClass(IntWritable.class);
+
+        FileInputFormat.addInputPath(
+                job,
+                new Path(args[0])
+        );
+
+        FileOutputFormat.setOutputPath(
+                job,
+                new Path(args[1])
+        );
+
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }
+}
+
+Practical 12 — Hadoop Log File Processing
+Aim
+
+To process log file and count ERROR messages using Hadoop MapReduce.
+
+Step 1 — Create Java File
+nano LogAnalysis.java
+
+Paste this code.
+
+LogAnalysis.java Code
+
+Step 2 — Save File
+CTRL + O
+ENTER
+CTRL + X
+Step 3 — Compile Code
+javac -classpath $(hadoop classpath) -d log_classes LogAnalysis.java
+Step 4 — Create JAR File
+jar -cvf loganalysis.jar -C log_classes/ .
+Step 5 — Create Log File
+nano logfile.txt
+
+Add:
+
+INFO Server Started
+ERROR Database Failed
+INFO User Login
+ERROR Network Issue
+
+Save file.
+
+Step 6 — Create HDFS Directory
+hdfs dfs -mkdir /loginput
+Step 7 — Upload Log File
+hdfs dfs -put logfile.txt /loginput
+Step 8 — Run Hadoop Job
+hadoop jar loganalysis.jar LogAnalysis /loginput /logoutput
+Step 9 — View Output
+hdfs dfs -cat /logoutput/part-r-00000
+Expected Output
+ERROR 2
+Log Processing Explanation
+Mapper
+
+Checks each line:
+
+if(line.contains("ERROR"))
+
+If ERROR exists:
+
+(ERROR,1)
+Reducer
+
+Reducer adds all ERROR counts.
+
+Inference
+Inference:
+1. Log file was processed successfully.
+2. Mapper identified ERROR messages.
+3. Reducer counted total ERROR occurrences.
+4. Hadoop processed log file in distributed manner.
