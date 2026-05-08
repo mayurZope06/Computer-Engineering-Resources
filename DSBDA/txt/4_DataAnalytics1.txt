@@ -1,0 +1,194 @@
+# ---------------------------------------------------
+# Linear Regression - Boston Housing Dataset
+# ---------------------------------------------------
+
+# Import Libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# ---------------------------------------------------
+# Load Dataset
+# ---------------------------------------------------
+
+df = pd.read_csv("BostonHousing.csv")
+
+# ---------------------------------------------------
+# Display First 5 Rows
+# ---------------------------------------------------
+
+print("First 5 Rows of Dataset:\n")
+print(df.head())
+
+# ---------------------------------------------------
+# Dataset Information
+# ---------------------------------------------------
+
+print("\nDataset Information:\n")
+print(df.info())
+
+# ---------------------------------------------------
+# Statistical Summary
+# ---------------------------------------------------
+
+print("\nStatistical Summary:\n")
+print(df.describe())
+
+# ---------------------------------------------------
+# Select Input and Output
+# ---------------------------------------------------
+
+X = df[['rm']]
+
+y = df['medv']
+
+print("\nInput Feature (RM):\n")
+print(X.head())
+
+print("\nTarget Variable (MEDV):\n")
+print(y.head())
+
+# ---------------------------------------------------
+# Split Dataset
+# ---------------------------------------------------
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+print("\nTraining Data Shape:")
+print(X_train.shape)
+
+print("\nTesting Data Shape:")
+print(X_test.shape)
+
+# ---------------------------------------------------
+# Create Model
+# ---------------------------------------------------
+
+model = LinearRegression()
+
+# ---------------------------------------------------
+# Train Model
+# ---------------------------------------------------
+
+model.fit(X_train, y_train)
+
+# ---------------------------------------------------
+# Predictions
+# ---------------------------------------------------
+
+prediction = model.predict(X_test)
+
+print("\nPredicted House Prices:\n")
+print(prediction)
+
+# ---------------------------------------------------
+# Actual vs Predicted
+# ---------------------------------------------------
+
+comparison = pd.DataFrame({
+    "Actual Price": y_test.values,
+    "Predicted Price": prediction
+})
+
+print("\nActual vs Predicted Prices:\n")
+print(comparison.head())
+
+# ---------------------------------------------------
+# Model Scores
+# ---------------------------------------------------
+
+train_score = model.score(X_train, y_train)
+
+test_score = model.score(X_test, y_test)
+
+print("\nTraining Score:")
+print(train_score)
+
+print("\nTesting Score:")
+print(test_score)
+
+# ---------------------------------------------------
+# Mean Squared Error
+# ---------------------------------------------------
+
+mse = mean_squared_error(y_test, prediction)
+
+print("\nMean Squared Error:")
+print(mse)
+
+# ---------------------------------------------------
+# Root Mean Squared Error
+# ---------------------------------------------------
+
+rmse = np.sqrt(mean_squared_error(y_test, prediction))
+
+print("\nRoot Mean Squared Error:")
+print(rmse)
+
+# ---------------------------------------------------
+# Plot Graph
+# ---------------------------------------------------
+
+plt.scatter(X_test, y_test)
+
+plt.plot(X_test, prediction)
+
+plt.xlabel("Average Number of Rooms (RM)")
+
+plt.ylabel("House Price (MEDV)")
+
+plt.title("Linear Regression - Boston Housing")
+
+plt.show()
+
+
+M
+
+
+import pandas as pd
+Imports pandas.
+
+from sklearn.model_selection import train_test_split
+Used to split data into training and testing parts.
+
+from sklearn.linear_model import LinearRegression
+Imports linear regression model.
+
+df = pd.read_csv("HousingData.csv")
+Reads housing dataset.
+
+X = df[['RM']]
+X is input.
+RM means average number of rooms.
+
+y = df['MEDV']
+y is output.
+MEDV is house price.
+
+train_test_split(...)
+Splits data into:
+training set
+testing set
+
+model = LinearRegression()
+Creates the model.
+
+model.fit(X_train, y_train)
+Trains the model on training data.
+
+y_pred = model.predict(X_test)
+Predicts house prices for test data.
+
+print(y_pred)
+Displays predicted values.
+
+Linear regression is used to predict a continuous numeric value.

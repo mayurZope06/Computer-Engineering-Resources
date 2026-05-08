@@ -1,0 +1,435 @@
+import nltk
+import pandas as pd
+
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+from nltk import pos_tag
+
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Download required NLTK files
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+# Sample document
+text = """
+Data Science is one of the most important fields in Computer Science.
+It is used in Machine Learning, Artificial Intelligence, and Data Analytics.
+"""
+
+print("Original Text:\n")
+print(text)
+
+# ---------------------------------------------------
+# 1. Tokenization
+# ---------------------------------------------------
+
+tokens = word_tokenize(text)
+
+print("\nTokenization:\n")
+print(tokens)
+
+# ---------------------------------------------------
+# 2. POS Tagging
+# ---------------------------------------------------
+
+pos = pos_tag(tokens)
+
+print("\nPOS Tagging:\n")
+print(pos)
+
+# ---------------------------------------------------
+# 3. Stopword Removal
+# ---------------------------------------------------
+
+stop_words = set(stopwords.words('english'))
+
+filtered_words = []
+
+for word in tokens:
+    if word.lower() not in stop_words:
+        filtered_words.append(word)
+
+print("\nAfter Stopword Removal:\n")
+print(filtered_words)
+
+# ---------------------------------------------------
+# 4. Stemming
+# ---------------------------------------------------
+
+ps = PorterStemmer()
+
+stemmed_words = []
+
+for word in filtered_words:
+    stemmed_words.append(ps.stem(word))
+
+print("\nStemmed Words:\n")
+print(stemmed_words)
+
+# ---------------------------------------------------
+# 5. Lemmatization
+# ---------------------------------------------------
+
+lemmatizer = WordNetLemmatizer()
+
+lemmatized_words = []
+
+for word in filtered_words:
+    lemmatized_words.append(lemmatizer.lemmatize(word))
+
+print("\nLemmatized Words:\n")
+print(lemmatized_words)
+
+# ---------------------------------------------------
+# 6. Term Frequency (TF)
+# ---------------------------------------------------
+
+cv = CountVectorizer()
+
+word_count = cv.fit_transform([text])
+
+tf_df = pd.DataFrame(
+    word_count.toarray(),
+    columns=cv.get_feature_names_out()
+)
+
+print("\nTerm Frequency (TF):\n")
+print(tf_df)
+
+# ---------------------------------------------------
+# 7. Inverse Document Frequency + TF-IDF
+# ---------------------------------------------------
+
+tfidf = TfidfVectorizer()
+
+tfidf_matrix = tfidf.fit_transform([text])
+
+tfidf_df = pd.DataFrame(
+    tfidf_matrix.toarray(),
+    columns=tfidf.get_feature_names_out()
+)
+
+print("\nTF-IDF Representation:\n")
+print(tfidf_df)
+
+
+M
+
+
+
+import nltk
+Imports NLTK library for text processing.
+
+word_tokenize
+Splits sentence into words.
+
+stopwords
+Gives common useless words like “is”, “the”, “and”.
+
+PorterStemmer, WordNetLemmatizer
+Used for stemming and lemmatization.
+
+TfidfVectorizer
+Used to calculate TF-IDF values.
+
+text = ...
+A sample sentence.
+
+tokens = word_tokenize(text)
+Breaks sentence into individual words.
+
+stop_words = set(stopwords.words('english'))
+Loads English stop words.
+
+filtered_words = ...
+Removes stop words from tokens.
+
+ps = PorterStemmer()
+Creates stemming object.
+
+stemmed_words = ...
+Converts words to root-like form.
+
+lemmatizer = WordNetLemmatizer()
+Creates lemmatizer object.
+
+lemmatized_words = ...
+Converts words to proper base form.
+
+vectorizer = TfidfVectorizer()
+Creates TF-IDF object.
+
+fit_transform([text])
+Learns word importance from text.
+
+toarray()
+Converts sparse matrix into array format.
+
+get_feature_names_out()
+Shows the word names used in TF-IDF.
+
+Text analytics is about cleaning and converting text into numbers.
+
+1) Import Libraries
+import nltk
+import pandas as pd
+Explanation
+nltk → Natural Language Toolkit for text processing
+pandas → used for tables/dataframes
+2) Import NLP Functions
+from nltk.tokenize import word_tokenize
+Explanation
+
+Used for tokenization.
+
+Breaks sentence into words.
+
+Example:
+
+"Hello World"
+
+becomes
+
+['Hello', 'World']
+from nltk.corpus import stopwords
+Explanation
+
+Provides common English stop words like:
+
+is
+the
+and
+of
+from nltk.stem import PorterStemmer
+Explanation
+
+Used for stemming.
+
+Example:
+
+playing → play
+from nltk.stem import WordNetLemmatizer
+Explanation
+
+Used for lemmatization.
+
+Converts words to meaningful base form.
+
+Example:
+
+better → good
+from nltk import pos_tag
+Explanation
+
+Used for POS tagging.
+
+POS = Part Of Speech.
+
+Identifies:
+
+noun
+verb
+adjective
+
+etc.
+
+3) TF and TF-IDF Imports
+from sklearn.feature_extraction.text import CountVectorizer
+Explanation
+
+Used for Term Frequency calculation.
+
+Counts how many times each word appears.
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+Explanation
+
+Used for TF-IDF calculation.
+
+4) Download NLTK Data
+nltk.download('punkt')
+Explanation
+
+Downloads tokenizer data.
+
+nltk.download('stopwords')
+Explanation
+
+Downloads stopword dataset.
+
+nltk.download('wordnet')
+Explanation
+
+Downloads dictionary for lemmatization.
+
+nltk.download('averaged_perceptron_tagger')
+Explanation
+
+Downloads POS tagging model.
+
+5) Sample Text
+text = """
+Data Science is one of the most important fields in Computer Science.
+"""
+Explanation
+
+Sample document for processing.
+
+6) Tokenization
+tokens = word_tokenize(text)
+Explanation
+
+Breaks text into words/tokens.
+
+Example output:
+
+['Data', 'Science', 'is', 'one', 'of', 'the']
+7) POS Tagging
+pos = pos_tag(tokens)
+Explanation
+
+Assigns grammatical tags.
+
+Example:
+
+('Data', 'NN')
+
+NN means noun.
+
+8) Stopword Removal
+stop_words = set(stopwords.words('english'))
+Explanation
+
+Loads English stopwords.
+
+for word in tokens:
+Explanation
+
+Loops through all tokens.
+
+if word.lower() not in stop_words:
+Explanation
+
+Checks if word is NOT a stopword.
+
+filtered_words.append(word)
+Explanation
+
+Adds useful words into new list.
+
+9) Stemming
+ps = PorterStemmer()
+Explanation
+
+Creates stemming object.
+
+ps.stem(word)
+Explanation
+
+Converts words into root form.
+
+Example:
+
+playing → play
+10) Lemmatization
+lemmatizer = WordNetLemmatizer()
+Explanation
+
+Creates lemmatizer object.
+
+lemmatizer.lemmatize(word)
+Explanation
+
+Converts word into meaningful base word.
+
+11) Term Frequency (TF)
+cv = CountVectorizer()
+Explanation
+
+Creates TF vectorizer.
+
+word_count = cv.fit_transform([text])
+Explanation
+
+Counts frequency of each word.
+
+tf_df = pd.DataFrame(
+    word_count.toarray(),
+    columns=cv.get_feature_names_out()
+)
+Explanation
+
+Creates proper TF table.
+
+Example:
+
+data	science	computer
+2	2	1
+12) TF-IDF
+tfidf = TfidfVectorizer()
+Explanation
+
+Creates TF-IDF object.
+
+tfidf_matrix = tfidf.fit_transform([text])
+Explanation
+
+Calculates TF-IDF scores.
+
+tfidf_df = pd.DataFrame(
+    tfidf_matrix.toarray(),
+    columns=tfidf.get_feature_names_out()
+)
+Explanation
+
+Creates TF-IDF table with:
+
+words
+importance scores
+
+Example:
+
+data	science	machine
+0.45	0.52	0.33
+
+Higher score = more important word.
+
+Viva Questions
+What is Tokenization?
+
+Breaking text into words.
+
+What is POS Tagging?
+
+Identifying grammar role of words.
+
+What are Stopwords?
+
+Common words with little meaning.
+
+Example:
+
+is
+the
+and
+Difference between Stemming and Lemmatization?
+Stemming	Lemmatization
+Simple root form	Meaningful base word
+Faster	More accurate
+What is TF?
+
+Counts word frequency in document.
+
+What is IDF?
+
+Measures importance of word across documents.
+
+What is TF-IDF?
+
+Combination of TF and IDF used to find important words.

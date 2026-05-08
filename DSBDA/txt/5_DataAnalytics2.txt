@@ -1,0 +1,350 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+df = pd.read_csv("Social_Network_Ads.csv")
+
+X = df[['Age', 'EstimatedSalary']]
+y = df['Purchased']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=0
+)
+
+model = LogisticRegression()
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+cm = confusion_matrix(y_test, y_pred)
+
+# Confusion matrix format for this binary classification:
+
+# [ TN FP
+#   FN TP]
+    
+print("Confusion Matrix:\n", cm)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+
+TN = cm[0][0]
+FP = cm[0][1]
+FN = cm[1][0]
+TP = cm[1][1]
+
+print("TP:", TP)
+print("FP:", FP)
+print("TN:", TN)
+print("FN:", FN)
+
+# print("Accuracy:", accuracy_score(y_test, y_pred))
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+print("Accuracy: ", accuracy)
+
+# print("Error Rate:", 1 - accuracy_score(y_test, y_pred))
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+print("Error Rate: ", error_rate)
+
+# print("Precision:", precision_score(y_test, y_pred))
+precision = TP / (TP + FP)
+print("Precision: ", precision)
+
+# print("Recall:", recall_score(y_test, y_pred))
+recall = TP / (TP + FN)
+print("Recall: ", recall)
+
+
+M
+
+
+
+import pandas as pd
+Imports pandas.
+
+from sklearn.model_selection import train_test_split
+Used to split dataset.
+
+from sklearn.linear_model import LogisticRegression
+Imports logistic regression model.
+
+from sklearn.metrics ...
+Imports evaluation functions.
+
+df = pd.read_csv("Social_Network_Ads.csv")
+Loads dataset.
+
+X = df[['Age', 'EstimatedSalary']]
+Input features are age and salary.
+
+y = df['Purchased']
+Output is whether a person purchased or not.
+
+train_test_split(...)
+Splits data into train and test sets.
+
+model = LogisticRegression()
+Creates logistic regression model.
+
+model.fit(X_train, y_train)
+Trains model.
+
+y_pred = model.predict(X_test)
+Predicts class values.
+
+confusion_matrix(...)
+Shows correct and wrong predictions.
+
+accuracy_score(...)
+Calculates accuracy.
+
+precision_score(...)
+Tells how many predicted positives were actually correct.
+
+recall_score(...)
+Tells how many actual positives were found correctly.
+
+Logistic regression is used for classification, usually yes/no type output.
+
+import pandas as pd
+Explanation
+Imports pandas library.
+Used for handling datasets in table format.
+from sklearn.model_selection import train_test_split
+Explanation
+Imports function to split dataset.
+Splits data into:
+Training data
+Testing data
+
+Why?
+
+Training data teaches model.
+Testing data checks performance.
+from sklearn.linear_model import LogisticRegression
+Explanation
+Imports Logistic Regression algorithm.
+Used for classification problems.
+
+Example:
+
+Yes/No
+Purchased/Not Purchased
+Spam/Not Spam
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+Explanation
+
+Imports functions used to evaluate model performance.
+
+confusion_matrix() → shows correct/wrong predictions
+accuracy_score() → calculates accuracy
+precision_score() → calculates precision
+recall_score() → calculates recall
+df = pd.read_csv("Social_Network_Ads.csv")
+Explanation
+Reads CSV dataset.
+Stores dataset in variable df.
+
+df = DataFrame.
+
+X = df[['Age', 'EstimatedSalary']]
+Explanation
+X stores input features.
+Features used:
+Age
+EstimatedSalary
+
+These values help predict purchasing behavior.
+
+y = df['Purchased']
+Explanation
+y stores target/output column.
+Purchased contains:
+1 → Purchased
+0 → Not Purchased
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=0
+)
+Explanation
+
+Splits dataset into:
+
+Training set = 75%
+Testing set = 25%
+
+Parameters:
+
+test_size=0.25
+25% data for testing.
+random_state=0
+Ensures same split every time.
+model = LogisticRegression()
+Explanation
+Creates Logistic Regression model object.
+model.fit(X_train, y_train)
+Explanation
+Trains model using training data.
+Model learns relationship between:
+Age
+Salary
+Purchased
+y_pred = model.predict(X_test)
+Explanation
+Predicts output for testing data.
+
+Predicted outputs:
+
+1 → Purchased
+0 → Not Purchased
+cm = confusion_matrix(y_test, y_pred)
+Explanation
+
+Creates confusion matrix.
+
+Confusion matrix format:
+
+[ TN FP
+  FN TP ]
+
+Meaning:
+
+TN → Correctly predicted NO
+FP → Incorrectly predicted YES
+FN → Incorrectly predicted NO
+TP → Correctly predicted YES
+print("Confusion Matrix:\n", cm)
+Explanation
+
+Prints confusion matrix.
+
+Example:
+
+[[65  3]
+ [ 8 24]]
+
+Meaning:
+
+TN = 65
+FP = 3
+FN = 8
+TP = 24
+print("Accuracy:", accuracy_score(y_test, y_pred))
+Explanation
+
+Calculates accuracy directly using sklearn.
+
+Formula:
+
+Accuracy=
+TP+TN+FP+FN
+TP+TN
+	​
+
+
+print("Precision:", precision_score(y_test, y_pred))
+Explanation
+
+Precision means:
+Out of predicted YES values, how many were actually YES?
+
+Formula:
+
+Precision=
+TP+FP
+TP
+	​
+
+
+print("Recall:", recall_score(y_test, y_pred))
+Explanation
+
+Recall means:
+Out of actual YES values, how many were predicted correctly?
+
+Formula:
+
+Recall=
+TP+FN
+TP
+	​
+
+
+Extracting TP, FP, FN, TN
+TN = cm[0][0]
+FP = cm[0][1]
+FN = cm[1][0]
+TP = cm[1][1]
+Explanation
+
+From matrix:
+
+[ TN FP
+  FN TP ]
+cm[0][0] → TN
+cm[0][1] → FP
+cm[1][0] → FN
+cm[1][1] → TP
+print("TP:", TP)
+print("FP:", FP)
+print("TN:", TN)
+print("FN:", FN)
+Explanation
+
+Prints all confusion matrix values separately.
+
+Manual Accuracy Calculation
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+Explanation
+
+Manual formula for accuracy.
+
+Error Rate
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+Explanation
+
+Error Rate means:
+How many predictions were wrong?
+
+Formula:
+
+Error Rate=
+TP+TN+FP+FN
+FP+FN
+	​
+
+
+Manual Precision
+precision = TP / (TP + FP)
+Explanation
+
+Precision formula.
+
+Manual Recall
+recall = TP / (TP + FN)
+Explanation
+
+Recall formula.
+
+Viva Questions
+Why Logistic Regression?
+
+Used for binary classification.
+
+Difference between Linear and Logistic Regression?
+Linear	Logistic
+Predicts number	Predicts category
+Continuous output	Binary output
+What is confusion matrix?
+
+Table showing correct and incorrect predictions.
+
+What is Precision?
+
+Correct positive predictions out of total predicted positives.
+
+What is Recall?
+
+Correct positive predictions out of actual positives.

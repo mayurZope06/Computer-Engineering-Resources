@@ -1,0 +1,101 @@
+import pandas as pd
+
+# ---------------------------------------------------
+# Load Dataset
+# ---------------------------------------------------
+
+df = pd.read_csv("Iris.csv")
+
+# ---------------------------------------------------
+# Display First 5 Rows
+# ---------------------------------------------------
+
+print("First 5 Rows of Dataset:\n")
+print(df.head())
+
+# ---------------------------------------------------
+# Overall Dataset Description
+# ---------------------------------------------------
+
+print("\nOverall Statistical Summary:\n")
+print(df.describe())
+
+# ---------------------------------------------------
+# Description of SepalLengthCm
+# ---------------------------------------------------
+
+print("\nStatistics of SepalLengthCm:\n")
+print(df["SepalLengthCm"].describe())
+
+# ---------------------------------------------------
+# Grouped Statistics by Species
+# ---------------------------------------------------
+
+grouped = df.groupby("Species")["SepalLengthCm"]
+
+# Mean
+print("\nMean of SepalLengthCm for each Species:\n")
+print(grouped.mean())
+
+# Median
+print("\nMedian of SepalLengthCm for each Species:\n")
+print(grouped.median())
+
+# Minimum
+print("\nMinimum SepalLengthCm for each Species:\n")
+print(grouped.min())
+
+# Maximum
+print("\nMaximum SepalLengthCm for each Species:\n")
+print(grouped.max())
+
+# Standard Deviation
+print("\nStandard Deviation of SepalLengthCm for each Species:\n")
+print(grouped.std())
+
+# ---------------------------------------------------
+# Percentiles
+# ---------------------------------------------------
+
+print("\nPercentiles for each Species:\n")
+
+for species, data in df.groupby("Species"):
+
+    print("\nSpecies:", species)
+
+    print(data["SepalLengthCm"].quantile([0.25, 0.50, 0.75]))
+
+# ---------------------------------------------------
+# List of Values for Each Category
+# ---------------------------------------------------
+
+print("\nList of SepalLengthCm values for each Species:\n")
+
+species_list = grouped.apply(list)
+
+print(species_list)
+
+
+M
+
+
+import pandas as pd
+Imports pandas.
+
+df = pd.read_csv("iris.csv")
+Loads Iris dataset.
+
+df.groupby('species')['sepal_length'].mean()
+Groups rows by species.
+Finds average sepal length for each species.
+
+df.groupby('species')['sepal_length'].median()
+Finds middle value of sepal length for each species.
+
+df.groupby('species')['sepal_length'].std()
+Finds standard deviation for each species.
+
+df.describe()
+Gives full statistical summary.
+
+This practical shows how to compare groups using statistics.

@@ -1,0 +1,230 @@
+# Import Libraries
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# ---------------------------------------------------
+# Load Titanic Dataset
+# ---------------------------------------------------
+
+df = sns.load_dataset('titanic')
+
+# ---------------------------------------------------
+# Display First 5 Rows
+# ---------------------------------------------------
+
+print("First 5 Rows of Dataset:\n")
+print(df.head())
+
+# ---------------------------------------------------
+# Shape of Dataset
+# ---------------------------------------------------
+
+print("\nShape of Dataset:")
+print(df.shape)
+
+# ---------------------------------------------------
+# Dataset Information
+# ---------------------------------------------------
+
+print("\nDataset Information:\n")
+print(df.info())
+
+# ---------------------------------------------------
+# Statistical Summary
+# ---------------------------------------------------
+
+print("\nStatistical Summary of Fare:\n")
+print(df['fare'].describe())
+
+# ---------------------------------------------------
+# Histogram Plot
+# ---------------------------------------------------
+
+sns.histplot(df['fare'], bins=30)
+
+# ---------------------------------------------------
+# Labels and Title
+# ---------------------------------------------------
+
+plt.title("Fare Distribution")
+
+plt.xlabel("Fare")
+
+plt.ylabel("Count")
+
+# ---------------------------------------------------
+# Show Plot
+# ---------------------------------------------------
+
+plt.show()
+
+
+M
+
+
+
+import seaborn as sns
+Seaborn is used for data visualization.
+
+import matplotlib.pyplot as plt
+Used to display and customize graphs.
+
+df = sns.load_dataset('titanic')
+Loads Titanic dataset.
+
+sns.histplot(df['fare'], bins=30)
+Draws histogram for fare column.
+bins=30 divides data into 30 parts.
+
+plt.title(...)
+Adds title.
+
+plt.xlabel(...)
+Labels x-axis.
+
+plt.ylabel(...)
+Labels y-axis.
+
+plt.show()
+Displays graph.
+
+Histogram shows frequency distribution of numeric data.
+
+1) Import Libraries
+import seaborn as sns
+Explanation
+
+Seaborn library is used for data visualization.
+
+import matplotlib.pyplot as plt
+Explanation
+
+Matplotlib is used to display graphs.
+
+2) Load Dataset
+df = sns.load_dataset('titanic')
+Explanation
+
+Loads Titanic dataset from Seaborn.
+
+Dataset contains:
+
+passenger details
+fare
+age
+survival status
+3) Display Dataset
+print(df.head())
+Explanation
+
+Displays first 5 rows.
+
+4) Shape of Dataset
+print(df.shape)
+Explanation
+
+Displays:
+
+number of rows
+number of columns
+
+Example:
+
+(891, 15)
+5) Dataset Information
+print(df.info())
+Explanation
+
+Shows:
+
+column names
+datatypes
+non-null values
+6) Statistical Summary
+print(df['fare'].describe())
+Explanation
+
+Displays:
+
+mean
+min
+max
+standard deviation
+quartiles
+
+for Fare column.
+
+7) Histogram
+sns.histplot(df['fare'], bins=30)
+Explanation
+
+Creates histogram for Fare column.
+
+fare → ticket price
+bins=30 → divides data into 30 intervals
+
+Histogram shows:
+
+frequency distribution
+spread of data
+skewness
+Histogram Meaning
+
+Histogram shows:
+
+how frequently values occur
+distribution pattern
+8) Title
+plt.title("Fare Distribution")
+Explanation
+
+Adds graph title.
+
+9) Axis Labels
+plt.xlabel("Fare")
+Explanation
+
+Labels x-axis.
+
+plt.ylabel("Count")
+Explanation
+
+Labels y-axis.
+
+10) Show Graph
+plt.show()
+Explanation
+
+Displays histogram.
+
+Expected Observation / Inference (VERY IMPORTANT)
+Inference:
+1. Most passengers paid lower fares.
+2. Very few passengers paid extremely high fares.
+3. Fare distribution is positively skewed.
+4. Majority of fare values are concentrated at lower range.
+5. Outliers are present in fare distribution.
+Viva Questions
+What is Histogram?
+
+Graph used to show frequency distribution of numerical data.
+
+What is Seaborn?
+
+Python library used for data visualization.
+
+What does bins mean in histogram?
+
+Number of intervals/groups in histogram.
+
+What is skewness?
+
+Measure of asymmetry in data distribution.
+
+What is positively skewed data?
+
+Data where tail extends toward right side.
+
+Why histogram is used?
+
+To understand data distribution and frequency.

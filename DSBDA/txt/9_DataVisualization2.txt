@@ -1,0 +1,248 @@
+# ---------------------------------------------------
+# Data Visualization II - Boxplot
+# ---------------------------------------------------
+
+# Import Libraries
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# ---------------------------------------------------
+# Load Titanic Dataset
+# ---------------------------------------------------
+
+df = sns.load_dataset('titanic')
+
+# ---------------------------------------------------
+# Display First 5 Rows
+# ---------------------------------------------------
+
+print("First 5 Rows of Dataset:\n")
+print(df.head())
+
+# ---------------------------------------------------
+# Shape of Dataset
+# ---------------------------------------------------
+
+print("\nShape of Dataset:")
+print(df.shape)
+
+# ---------------------------------------------------
+# Dataset Information
+# ---------------------------------------------------
+
+print("\nDataset Information:\n")
+print(df.info())
+
+# ---------------------------------------------------
+# Statistical Summary
+# ---------------------------------------------------
+
+print("\nStatistical Summary of Age:\n")
+print(df['age'].describe())
+
+# ---------------------------------------------------
+# Boxplot
+# ---------------------------------------------------
+
+sns.boxplot(
+    x='sex',
+    y='age',
+    hue='survived',
+    data=df
+)
+
+# ---------------------------------------------------
+# Labels and Title
+# ---------------------------------------------------
+
+plt.title("Age Distribution by Gender and Survival")
+
+plt.xlabel("Gender")
+
+plt.ylabel("Age")
+
+# ---------------------------------------------------
+# Show Plot
+# ---------------------------------------------------
+
+plt.show()
+
+
+M
+www
+
+
+sns.boxplot(...)
+Creates boxplot.
+
+x='sex'
+Gender goes on x-axis.
+
+y='age'
+Age goes on y-axis.
+
+hue='survived'
+Separates data by survival status.
+
+data=df
+Uses Titanic dataset.
+
+plt.title(...)
+Adds title.
+
+plt.show()
+Displays graph.
+
+Boxplot helps to compare distribution and detect outliers.
+
+1) Import Libraries
+import seaborn as sns
+Explanation
+
+Used for data visualization.
+
+import matplotlib.pyplot as plt
+Explanation
+
+Used for displaying graphs.
+
+2) Load Dataset
+df = sns.load_dataset('titanic')
+Explanation
+
+Loads Titanic dataset.
+
+3) Display Dataset
+print(df.head())
+Explanation
+
+Displays first 5 rows.
+
+4) Shape of Dataset
+print(df.shape)
+Explanation
+
+Shows:
+
+number of rows
+number of columns
+
+Example:
+
+(891, 15)
+5) Dataset Information
+print(df.info())
+Explanation
+
+Displays:
+
+column names
+datatypes
+non-null values
+6) Statistical Summary
+print(df['age'].describe())
+Explanation
+
+Displays:
+
+mean
+min
+max
+quartiles
+standard deviation
+
+for Age column.
+
+7) Boxplot
+sns.boxplot(
+    x='sex',
+    y='age',
+    hue='survived',
+    data=df
+)
+Explanation
+
+Creates boxplot using:
+
+sex on x-axis
+age on y-axis
+survived as color category
+Meaning of Parameters
+Parameter	Meaning
+x='sex'	Gender
+y='age'	Age values
+hue='survived'	Survival status
+What Boxplot Shows
+
+A boxplot shows:
+
+median
+quartiles
+spread of data
+outliers
+Boxplot Components
+Component	Meaning
+Middle line	Median
+Box	Interquartile range
+Whiskers	Spread of data
+Dots outside	Outliers
+8) Title
+plt.title("Age Distribution by Gender and Survival")
+Explanation
+
+Adds graph title.
+
+9) Axis Labels
+plt.xlabel("Gender")
+Explanation
+
+Labels x-axis.
+
+plt.ylabel("Age")
+Explanation
+
+Labels y-axis.
+
+10) Show Graph
+plt.show()
+Explanation
+
+Displays boxplot.
+
+Expected Observations / Inference (VERY IMPORTANT)
+Inference:
+1. Female passengers had higher survival rate than males.
+2. Most passengers were between age 20 and 40.
+3. Median age differs for male and female passengers.
+4. Some outliers are present in age distribution.
+5. Younger females had better survival probability.
+6. Age distribution varies according to survival status.
+Viva Questions
+What is Boxplot?
+
+Graph used to visualize distribution and detect outliers.
+
+What is an outlier?
+
+Value significantly different from other values.
+
+What does hue represent?
+
+Additional categorical grouping in graph.
+
+What does median represent?
+
+Middle value of data.
+
+What is IQR?
+
+Interquartile Range:
+Q3 − Q1
+
+IQR Formula
+
+IQR=Q3−Q1
+
+Why boxplot is used?
+
+To compare distributions and identify outliers.

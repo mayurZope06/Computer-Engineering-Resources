@@ -1,0 +1,267 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+# Load dataset
+df = pd.read_csv("Iris.csv")
+
+# Features and target
+X = df.iloc[:, :-1]
+y = df.iloc[:, -1]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=1
+)
+
+# Create model
+model = GaussianNB()
+
+# Train model
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+# Confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+print("Confusion Matrix:")
+print(cm)
+
+# Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+# Error rate
+error_rate = 1 - accuracy
+
+# Precision and Recall
+precision = precision_score(y_test, y_pred, average='macro')
+recall = recall_score(y_test, y_pred, average='macro')
+
+print("\nAccuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision:", precision)
+print("Recall:", recall)
+
+# TP, FP, FN, TN for each class
+for i in range(len(cm)):
+
+    TP = cm[i, i]
+
+    FP = cm[:, i].sum() - TP
+
+    FN = cm[i, :].sum() - TP
+
+    TN = cm.sum() - (TP + FP + FN)
+
+    print("\nClass", i)
+    print("TP =", TP)
+    print("FP =", FP)
+    print("FN =", FN)
+    print("TN =", TN)
+
+
+M
+
+
+from sklearn.naive_bayes import GaussianNB
+Imports Naive Bayes classifier.
+
+df = pd.read_csv("iris.csv")
+Loads Iris dataset.
+
+X = df.iloc[:, :-1]
+Takes all columns except last as input.
+
+y = df.iloc[:, -1]
+Takes last column as target.
+
+train_test_split(...)
+Splits data.
+
+model = GaussianNB()
+Creates Naive Bayes model.
+
+model.fit(X_train, y_train)
+Trains model.
+
+y_pred = model.predict(X_test)
+Predicts output class.
+
+confusion_matrix(...)
+Checks prediction quality.
+
+accuracy_score(...)
+Calculates accuracy.
+
+Naive Bayes is a probability-based classification algorithm.
+
+import pandas as pd
+Explanation
+
+Imports pandas library.
+
+from sklearn.model_selection import train_test_split
+Explanation
+
+Used to split dataset into training and testing data.
+
+from sklearn.naive_bayes import GaussianNB
+Explanation
+
+Imports Gaussian Naive Bayes algorithm.
+
+Used for classification based on probability.
+
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+Explanation
+
+Imports evaluation functions.
+
+df = pd.read_csv("Iris.csv")
+Explanation
+
+Reads Iris dataset.
+
+Features and Target
+X = df.iloc[:, :-1]
+Explanation
+
+iloc means index-location based selection.
+
+: → all rows
+:-1 → all columns except last
+
+So:
+
+X contains input features.
+y = df.iloc[:, -1]
+Explanation
+-1 means last column.
+Last column is species/output.
+Train Test Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=1
+)
+Explanation
+80% training data
+20% testing data
+Create Model
+model = GaussianNB()
+Explanation
+
+Creates Naive Bayes model.
+
+Train Model
+model.fit(X_train, y_train)
+Explanation
+
+Model learns patterns from training data.
+
+Prediction
+y_pred = model.predict(X_test)
+Explanation
+
+Predicts flower species.
+
+Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+Explanation
+
+Creates confusion matrix.
+
+Since Iris has 3 classes:
+
+Setosa
+Versicolor
+Virginica
+
+Matrix becomes 3×3.
+
+print("Confusion Matrix:")
+print(cm)
+Explanation
+
+Prints confusion matrix.
+
+Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+Explanation
+
+Calculates prediction accuracy.
+
+Error Rate
+error_rate = 1 - accuracy
+Explanation
+
+Calculates wrong prediction percentage.
+
+Precision and Recall
+precision = precision_score(y_test, y_pred, average='macro')
+Explanation
+
+average='macro'
+means:
+Calculate precision for all classes separately and average them.
+
+recall = recall_score(y_test, y_pred, average='macro')
+Explanation
+
+Calculates average recall of all classes.
+
+TP FP FN TN for Each Class
+for i in range(len(cm)):
+Explanation
+
+Loop runs for every class.
+
+TP = cm[i, i]
+Explanation
+
+Diagonal values are True Positives.
+
+FP = cm[:, i].sum() - TP
+Explanation
+
+False Positives:
+Column sum minus TP.
+
+FN = cm[i, :].sum() - TP
+Explanation
+
+False Negatives:
+Row sum minus TP.
+
+TN = cm.sum() - (TP + FP + FN)
+Explanation
+
+Remaining values are True Negatives.
+
+print("\nClass", i)
+print("TP =", TP)
+print("FP =", FP)
+print("FN =", FN)
+print("TN =", TN)
+Explanation
+
+Prints TP FP FN TN for each class.
+
+Viva Questions
+What is Naive Bayes?
+
+Probability-based classification algorithm.
+
+Why called “Naive”?
+
+Assumes all features are independent.
+
+What is GaussianNB?
+
+Naive Bayes for continuous numeric data.
+
+Difference between Logistic Regression and Naive Bayes?
+Logistic Regression	Naive Bayes
+Uses equation	Uses probability
+Better for linear boundary	Better for small/simple datasets

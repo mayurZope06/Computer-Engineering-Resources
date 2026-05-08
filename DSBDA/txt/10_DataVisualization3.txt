@@ -1,0 +1,273 @@
+# ---------------------------------------------------
+# Data Visualization III - Iris Dataset
+# ---------------------------------------------------
+
+# Import Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# ---------------------------------------------------
+# Load Dataset
+# ---------------------------------------------------
+
+df = pd.read_csv("Iris.csv")
+
+# ---------------------------------------------------
+# Display First 5 Rows
+# ---------------------------------------------------
+
+print("First 5 Rows of Dataset:\n")
+print(df.head())
+
+# ---------------------------------------------------
+# Shape of Dataset
+# ---------------------------------------------------
+
+print("\nShape of Dataset:")
+print(df.shape)
+
+# ---------------------------------------------------
+# Feature Names
+# ---------------------------------------------------
+
+print("\nFeature Names:\n")
+print(df.columns)
+
+# ---------------------------------------------------
+# Number of Features
+# ---------------------------------------------------
+
+print("\nNumber of Features:")
+print(len(df.columns))
+
+# ---------------------------------------------------
+# Feature Types
+# ---------------------------------------------------
+
+print("\nFeature Types:\n")
+print(df.dtypes)
+
+# ---------------------------------------------------
+# Statistical Summary
+# ---------------------------------------------------
+
+print("\nStatistical Summary:\n")
+print(df.describe())
+
+# ---------------------------------------------------
+# Histograms
+# ---------------------------------------------------
+
+df.hist(figsize=(16, 12))
+
+plt.suptitle("Histogram of Iris Dataset Features")
+
+plt.show()
+
+# ---------------------------------------------------
+# Boxplots
+# ---------------------------------------------------
+
+df.plot(
+    kind='box',
+    subplots=True,
+    layout=(3, 2),
+    figsize=(16, 12)
+)
+
+plt.suptitle("Boxplot of Iris Dataset Features")
+
+plt.show()
+
+
+M
+
+
+
+import pandas as pd
+Imports pandas.
+
+import matplotlib.pyplot as plt
+Imports plotting library.
+
+df = pd.read_csv("iris.csv")
+Reads Iris dataset.
+
+print(df.dtypes)
+Shows data types of all columns.
+
+df.hist(...)
+Draws histogram for each numeric feature.
+
+plt.show()
+Displays histogram plots.
+
+df.plot(kind='box', ...)
+Draws boxplots for each feature.
+
+subplots=True
+Makes separate boxplot for each column.
+
+layout=(2,2)
+Arranges plots in 2 rows and 2 columns.
+
+This practical helps you understand feature distribution and outliers.
+
+1) Import Libraries
+import pandas as pd
+Explanation
+
+Used for handling dataset.
+
+import matplotlib.pyplot as plt
+Explanation
+
+Used for plotting graphs.
+
+2) Load Dataset
+df = pd.read_csv("Iris.csv")
+Explanation
+
+Reads Iris dataset into DataFrame.
+
+3) Display Dataset
+print(df.head())
+Explanation
+
+Displays first 5 rows.
+
+4) Shape of Dataset
+print(df.shape)
+Explanation
+
+Displays:
+
+number of rows
+number of columns
+
+Example:
+
+(150, 6)
+5) Feature Names
+print(df.columns)
+Explanation
+
+Displays names of all features.
+
+Example:
+
+SepalLengthCm
+SepalWidthCm
+PetalLengthCm
+PetalWidthCm
+Species
+6) Number of Features
+print(len(df.columns))
+Explanation
+
+Counts total number of columns/features.
+
+7) Feature Types
+print(df.dtypes)
+Explanation
+
+Displays datatype of each feature.
+
+Feature Type Example
+Feature	Type
+SepalLengthCm	Numeric
+SepalWidthCm	Numeric
+Species	Nominal/Categorical
+8) Statistical Summary
+print(df.describe())
+Explanation
+
+Displays:
+
+mean
+min
+max
+std deviation
+quartiles
+9) Histograms
+df.hist(figsize=(16, 12))
+Explanation
+
+Creates histogram for every numeric feature.
+
+Histogram shows:
+
+frequency distribution
+spread of data
+skewness
+10) Histogram Title
+plt.suptitle("Histogram of Iris Dataset Features")
+Explanation
+
+Adds overall title.
+
+11) Boxplots
+df.plot(
+    kind='box',
+    subplots=True,
+    layout=(3, 2),
+    figsize=(16, 12)
+)
+Explanation
+
+Creates separate boxplots for each feature.
+
+Parameters:
+
+kind='box' → boxplot graph
+subplots=True → separate graph for each feature
+layout=(3,2) → graph arrangement
+figsize=(16,12) → graph size
+12) Boxplot Title
+plt.suptitle("Boxplot of Iris Dataset Features")
+Explanation
+
+Adds title to boxplots.
+
+13) Show Graphs
+plt.show()
+Explanation
+
+Displays graphs.
+
+Expected Inference / Observation (VERY IMPORTANT)
+Inference:
+1. Iris dataset contains both numeric and nominal features.
+2. Histograms show distribution of feature values.
+3. Petal length and petal width have wider spread.
+4. Sepal width contains some outliers.
+5. Most features are approximately normally distributed.
+6. Boxplots help identify spread and outliers in dataset.
+Viva Questions
+What is Histogram?
+
+Graph showing frequency distribution of data.
+
+What is Boxplot?
+
+Graph used to visualize spread and outliers.
+
+What is an outlier?
+
+Value significantly different from other values.
+
+Difference between numeric and nominal data?
+Numeric	Nominal
+Numbers	Categories
+
+Why use histograms?
+
+To understand distribution of data.
+
+Why use boxplots?
+
+To detect outliers and compare distributions.
+
+What does subplots=True do?
+
+Creates separate graph for each feature.

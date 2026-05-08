@@ -1,0 +1,162 @@
+import pandas as pd
+import numpy as np
+
+# Load dataset
+df = pd.read_csv("Titanic-Dataset.csv")
+
+print("First 5 Rows of Dataset:\n")
+print(df.head())
+
+# Dataset information
+print("\nDataset Information:\n")
+print(df.info())
+
+# Check dimensions
+print("Rows and Columns:", df.shape)
+
+# ---------------------------------------------------
+# Size of Dataset
+# ---------------------------------------------------
+
+print("\nTotal Elements in Dataset:")
+print(df.size)
+
+df.isnull()
+
+# Check missing values
+print("\nMissing Values:\n")
+print(df.isnull().sum())
+
+# ---------------------------------------------------
+# Non Missing Values
+# ---------------------------------------------------
+
+print("\nNon Missing Values:\n")
+print(df.notnull().sum())
+
+
+df.notnull()
+
+df.notnull().sum()
+
+
+# Statistical summary
+print("\nStatistical Summary:\n")
+print(df.describe())
+
+df.size
+
+
+df.shape
+
+# Data types
+print("\nData Types:\n")
+print(df.dtypes)
+
+# Convert datatype
+df['Age'] = df['Age'].astype(float)
+
+print("\nDatatype of Age Column:")
+print(df['Age'].dtype)
+
+# Fills missing values in Age with the average age.
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+print("\nMissing Values After Filling Age Column:\n")
+print(df['Age'].isnull().sum())
+
+# Convert categorical to numeric
+df['Sex'] = df['Sex'].map({'Male':1, 'Female':0})
+print("\nAfter Converting Sex Column:\n")
+print(df[['Sex']].head())
+# df["gender"].replace({"female":0,"male":1}, inplace=True)
+
+# ---------------------------------------------------
+# Data Normalization
+# ---------------------------------------------------
+
+scaler = MinMaxScaler()
+
+df[['Fare']] = scaler.fit_transform(df[['Fare']])
+
+print("\nNormalized Fare Column:\n")
+print(df[['Fare']].head())
+
+# ---------------------------------------------------
+# Final Dataset
+# ---------------------------------------------------
+
+print("\nFinal Dataset:\n")
+print(df.head())
+
+
+M
+
+
+import pandas as pd
+pandas is a Python library used for handling data.
+pd is just a short name for pandas.
+
+df = pd.read_csv("data.csv")
+Reads the CSV file.
+Stores it in a DataFrame called df.
+A DataFrame is like a table of rows and columns.
+
+print(df.head())
+Shows the first 5 rows of the dataset.
+Useful to see how data looks.
+
+print(df.info())
+Gives information about:
+column names
+data types
+non-null values
+memory usage
+
+print(df.shape)
+Shows the size of dataset.
+Output is (rows, columns).
+
+print(df.isnull().sum())
+Checks missing values in each column.
+isnull() gives True for empty cells.
+sum() counts them.
+
+print(df.describe())
+Gives statistical summary of numeric columns.
+Includes:
+mean
+standard deviation
+min
+max
+quartiles
+
+print(df.dtypes)
+Shows the data type of each column.
+Example: int, float, object, etc.
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+Fills missing values in Age with the average age.
+df['Sex'] = df['Sex'].map({'male': 0, 'female': 1})
+Converts categorical values into numbers.
+male becomes 0, female becomes 1.
+
+print(df.head())
+Shows updated data after cleaning.
+
+
+normalization- Process of scaling values into fixed range.
+Normalization Formula
+
+X
+norm =  X −X min / Xmax−Xmin
+
+Where:
+
+X = original value
+Xmin = minimum value
+Xmax = maximum value
+	​
+
+	​
+
+
+This practical is about reading, checking, cleaning, and converting data.

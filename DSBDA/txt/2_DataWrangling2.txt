@@ -1,0 +1,413 @@
+# ---------------------------------------------------
+# Data Wrangling II
+# ---------------------------------------------------
+
+# 1. Import Libraries
+import pandas as pd
+import numpy as np
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ---------------------------------------------------
+# 2. Load Dataset
+# ---------------------------------------------------
+
+df = pd.read_csv("data.csv")
+
+# ---------------------------------------------------
+# 3. Display First 5 Rows
+# ---------------------------------------------------
+
+print("First 5 Rows:\n")
+print(df.head())
+
+# ---------------------------------------------------
+# 4. Check Missing Values
+# ---------------------------------------------------
+
+print("\nMissing Values:\n")
+print(df.isnull().sum())
+
+# ---------------------------------------------------
+# 5. Handle Missing Values
+# ---------------------------------------------------
+
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+
+print("\nMissing Values After Filling:\n")
+print(df['Age'].isnull().sum())
+
+# ---------------------------------------------------
+# 6. Handle Inconsistencies
+# ---------------------------------------------------
+
+df['Sex'] = df['Sex'].str.lower()
+
+print("\nUnique Values in Sex Column:\n")
+print(df['Sex'].unique())
+
+# ---------------------------------------------------
+# 7. Detect Outliers using IQR
+# ---------------------------------------------------
+
+Q1 = df['Age'].quantile(0.25)
+
+Q3 = df['Age'].quantile(0.75)
+
+IQR = Q3 - Q1
+
+lower_bound = Q1 - 1.5 * IQR
+
+upper_bound = Q3 + 1.5 * IQR
+
+print("\nLower Bound:", lower_bound)
+print("Upper Bound:", upper_bound)
+
+# ---------------------------------------------------
+# 8. Display Outliers
+# ---------------------------------------------------
+
+outliers = df[
+    (df['Age'] < lower_bound) |
+    (df['Age'] > upper_bound)
+]
+
+print("\nOutliers:\n")
+print(outliers[['Age']])
+
+# ---------------------------------------------------
+# 9. Remove Outliers
+# ---------------------------------------------------
+
+df = df[
+    (df['Age'] >= lower_bound) &
+    (df['Age'] <= upper_bound)
+]
+
+print("\nDataset Shape After Removing Outliers:")
+print(df.shape)
+
+# ---------------------------------------------------
+# 10. Boxplot Before Transformation
+# ---------------------------------------------------
+
+sns.boxplot(x=df['Age'])
+
+plt.title("Boxplot of Age")
+
+plt.show()
+
+# ---------------------------------------------------
+# 11. Data Transformation
+# ---------------------------------------------------
+
+df['Age_log'] = np.log(df['Age'])
+
+print("\nAge Column After Log Transformation:\n")
+print(df[['Age', 'Age_log']].head())
+
+# ---------------------------------------------------
+# 12. Histogram After Transformation
+# ---------------------------------------------------
+
+sns.histplot(df['Age_log'], bins=20)
+
+plt.title("Histogram of Log Transformed Age")
+
+plt.show()
+
+# ---------------------------------------------------
+# 13. Final Dataset
+# ---------------------------------------------------
+
+print("\nFinal Dataset:\n")
+print(df.head())
+
+
+M
+
+
+import pandas as pd
+Loads pandas for data handling.
+
+import numpy as np
+Loads numpy for mathematical operations.
+
+df = pd.read_csv("data.csv")
+Reads the dataset.
+
+print(df.isnull().sum())
+Finds missing values in all columns.
+
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+Replaces missing age values with mean age.
+
+Q1 = df['Age'].quantile(0.25)
+Finds first quartile.
+25% of data lies below this value.
+
+Q3 = df['Age'].quantile(0.75)
+Finds third quartile.
+75% of data lies below this value.
+
+IQR = Q3 - Q1
+Interquartile Range.
+Used to detect outliers.
+
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+These are the limits for outlier detection.
+
+outliers = df[(df['Age'] < lower_bound) | (df['Age'] > upper_bound)]
+Selects rows where age is too small or too large.
+These rows are outliers.
+
+print(outliers)
+Displays outlier rows.
+
+df['Age_log'] = np.log(df['Age'])
+Applies log transformation.
+Used to reduce skewness.
+
+print(df.head())
+Shows final updated dataset.
+
+This practical is about handling missing values, detecting outliers, and transforming data.
+
+import pandas as pd
+Explanation
+
+Used for handling datasets.
+
+import numpy as np
+Explanation
+
+Used for mathematical operations.
+
+import matplotlib.pyplot as plt
+Explanation
+
+Used for plotting graphs.
+
+import seaborn as sns
+Explanation
+
+Used for data visualization.
+
+2) Load Dataset
+df = pd.read_csv("data.csv")
+Explanation
+
+Reads CSV dataset into DataFrame.
+
+3) Display First 5 Rows
+print(df.head())
+Explanation
+
+Displays first 5 rows.
+
+4) Check Missing Values
+print(df.isnull().sum())
+Explanation
+
+Counts missing values in every column.
+
+5) Handle Missing Values
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+Explanation
+
+Fills missing Age values with average age.
+
+Example:
+
+Missing age → replaced with mean age.
+6) Handle Inconsistencies
+df['Sex'] = df['Sex'].str.lower()
+Explanation
+
+Converts text into lowercase.
+
+Example:
+
+Before	After
+Male	male
+FEMALE	female
+
+This removes inconsistencies.
+
+print(df['Sex'].unique())
+Explanation
+
+Displays unique values in Sex column.
+
+7) Detect Outliers using IQR
+Q1
+Q1 = df['Age'].quantile(0.25)
+Explanation
+
+Finds first quartile (25%).
+
+Q3
+Q3 = df['Age'].quantile(0.75)
+Explanation
+
+Finds third quartile (75%).
+
+IQR
+IQR = Q3 - Q1
+Explanation
+
+Interquartile Range.
+
+Used for outlier detection.
+
+Lower Bound
+lower_bound = Q1 - 1.5 * IQR
+Explanation
+
+Minimum acceptable value.
+
+Upper Bound
+upper_bound = Q3 + 1.5 * IQR
+Explanation
+
+Maximum acceptable value.
+
+Outlier Formula
+
+IQR=Q3 − Q1
+
+Lower Bound=Q1−1.5×IQR
+
+Upper Bound=Q3+1.5×IQR
+
+8) Display Outliers
+outliers = df[
+    (df['Age'] < lower_bound) |
+    (df['Age'] > upper_bound)
+]
+Explanation
+
+Selects rows where Age is outside valid range.
+
+These rows are outliers.
+
+print(outliers[['Age']])
+Explanation
+
+Displays outlier ages.
+
+9) Remove Outliers
+df = df[
+    (df['Age'] >= lower_bound) &
+    (df['Age'] <= upper_bound)
+]
+Explanation
+
+Keeps only valid rows.
+
+Outliers are removed.
+
+print(df.shape)
+Explanation
+
+Shows dataset size after removing outliers.
+
+10) Boxplot
+sns.boxplot(x=df['Age'])
+Explanation
+
+Creates boxplot for Age.
+
+Used to visualize:
+
+spread
+median
+outliers
+plt.show()
+Explanation
+
+Displays graph.
+
+11) Log Transformation
+df['Age_log'] = np.log(df['Age'])
+Explanation
+
+Applies logarithmic transformation.
+
+Purpose:
+
+reduce skewness
+make distribution more normal
+Log Formula
+
+X
+log
+	​
+
+=log(X)
+
+12) Histogram After Transformation
+sns.histplot(df['Age_log'], bins=20)
+Explanation
+
+Displays histogram of transformed data.
+
+13) Final Dataset
+print(df.head())
+Explanation
+
+Displays final processed dataset.
+
+Expected Output
+Missing Values
+Age       177
+Cabin     687
+Embarked    2
+After Filling Missing Values
+0
+
+Means:
+No missing values left in Age.
+
+Outlier Example
+Age
+80
+74
+71
+Why Transformation is Used (VERY IMPORTANT)
+Reason for Transformation:
+Log transformation is applied to reduce skewness and make the data distribution closer to normal distribution.
+Inference / Conclusion
+Inference:
+1. Missing values were identified and handled successfully.
+2. Inconsistencies in categorical data were removed.
+3. Outliers were detected using IQR method.
+4. Outliers were removed successfully.
+5. Log transformation reduced skewness in Age column.
+6. Dataset became cleaner and suitable for analysis.
+Viva Questions
+What is Data Cleaning?
+
+Process of fixing missing, inconsistent, or incorrect data.
+
+What is an Outlier?
+
+A value significantly different from other values.
+
+What is IQR?
+
+Interquartile Range used for outlier detection.
+
+Why remove outliers?
+
+They affect analysis and model performance.
+
+Why use log transformation?
+
+To reduce skewness and normalize data.
+
+Difference between normalization and transformation?
+Normalization	Transformation
+Scales values	Changes distribution
