@@ -29,7 +29,7 @@ y = data["Exited"]
 
 # Identify numerical and categorical columns
 num_cols = X.select_dtypes(include=["int64", "float64"]).columns
-cat_cols = X.select_dtypes(include=["object"]).columns
+cat_cols = X.select_dtypes(include=["object", "str"]).columns
 
 # Divide dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(
@@ -66,7 +66,6 @@ print("\nAccuracy:", round(accuracy_score(y_test, y_pred) * 100, 2), "%")
 
 print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
-
 
 What is Customer Churn?
 
