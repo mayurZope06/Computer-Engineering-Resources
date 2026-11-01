@@ -1,0 +1,96 @@
+Implement K-Means or hierarchical clustering on the sales_data_sample.csv dataset. Determine the number of clusters using the elbow method. 
+o	Dataset link: https://www.kaggle.com/datasets/kyanyoga/sample-sales-data
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+# Load dataset
+data = pd.read_csv("sales_data_sample.csv", encoding="latin1")
+
+# Select numerical features
+features = [
+    "QUANTITYORDERED",
+    "PRICEEACH",
+    "SALES",
+    "MSRP",
+    "MONTH_ID",
+    "YEAR_ID",
+    "QTR_ID"
+]
+
+X = data[features].copy()
+X = X.fillna(X.median())
+
+# Normalize the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Elbow Method
+wcss = []
+
+for k in range(1, 11):
+    model = KMeans(n_clusters=k, random_state=42, n_init=10)
+    model.fit(X_scaled)
+    wcss.append(model.inertia_)
+
+# Plot elbow graph
+plt.plot(range(1, 11), wcss, marker='o')
+plt.title("Elbow Method")
+plt.xlabel("Number of Clusters (K)")
+plt.ylabel("WCSS")
+plt.grid()
+plt.show()
+
+# Apply K-Means with 3 clusters
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+data["Cluster"] = kmeans.fit_predict(X_scaled)
+
+print("\nCluster Distribution:")
+print(data["Cluster"].value_counts().sort_index())
+
+print("\nFirst 10 Cluster Assignments:")
+print(data[["SALES", "QUANTITYORDERED", "Cluster"]].head(10))
+
+print("\nOptimal Number of Clusters: 3")
+
+
+What is Clustering?
+
+Clustering is an unsupervised machine learning technique that groups similar data points together.
+
+What is K-Means?
+
+K-Means is an unsupervised algorithm that divides data into K clusters based on similarity.
+
+How does K-Means work?
+1. Select the number of clusters K.
+2. Initialize K centroids.
+3. Assign each data point to its nearest centroid.
+4. Recalculate the centroid of each cluster.
+5. Repeat until the clusters stop changing significantly.
+
+What is the Elbow Method?
+
+The Elbow Method helps determine the optimal number of clusters.
+
+It plots the number of clusters (K) against WCSS.
+
+What is WCSS?
+
+Within-Cluster Sum of Squares measures the sum of squared distances between data points and their cluster centroids.
+
+WCSS=\sum_{i=1}^{K}\sum_{x E C_i} ||x- mu_i||^2
+
+The suitable K is selected near the point where the WCSS reduction starts slowing down, forming an elbow shape.
+
+Difference between 	supervised and unsupervised learning:
+Supervised Learning	Unsupervised Learning
+Uses labelled data	Uses unlabelled data
+Has a target variable	No target variable
+Classification and regression	Clustering
+
+What to tell the examiner:
+
+"We used K-Means to group similar sales records. The Elbow Method was used to identify a suitable number of clusters by observing the WCSS graph."

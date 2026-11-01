@@ -1,0 +1,112 @@
+
+ // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract Bank {
+
+    mapping(address => uint) private balances;
+
+    // Deposit money
+    function deposit() public payable {
+        require(msg.value > 0, "Enter valid amount");
+
+        balances[msg.sender] += msg.value;
+    }
+
+    // Withdraw money
+    function withdraw(uint amount) public {
+        require(amount > 0, "Invalid amount");
+        require(balances[msg.sender] >= amount,
+                "Insufficient balance");
+
+        balances[msg.sender] -= amount;
+
+        (bool success, ) =
+            payable(msg.sender).call{value: amount}("");
+
+        require(success, "Transfer failed");
+    }
+
+    // Show account balance
+    function showBalance() public view returns (uint) {
+        return balances[msg.sender];
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------------------------
+
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
+contract Bank {
+    address public accOwner;
+    uint256 balance = 0;
+
+    constructor() {
+        accOwner = msg.sender;
+    }
+
+    function Deposit() public payable {
+        require(accOwner == msg.sender, "You are not an account owner!");
+        require(msg.value > 0, "Amount should be greater than 0");
+
+        balance += msg.value;
+    }
+
+    function Withdraw(uint256 amount) public {
+        require(accOwner == msg.sender, "You are not an account owner!");
+        require(amount > 0, "Amount should be greater than 0");
+        require(amount <= balance, "Account does not have sufficient balance!");
+
+        balance -= amount;
+
+        (bool success, ) = payable(accOwner).call{value: amount}("");
+        require(success, "Transfer failed!");
+   }
+
+    function showBalance() public view returns (uint256) {
+        require(accOwner == msg.sender, "You are not an account owner!");
+        return balance;
+    }
+}
+
+
+What is a Smart Contract?
+
+A smart contract is a program stored on a blockchain that executes predefined instructions when called.
+
+What is Solidity?
+
+Solidity is a programming language used to write smart contracts for Ethereum-compatible blockchains.
+
+Our smart contract performs three operations:
+1. Deposit – Adds money to the user's account balance.
+2. Withdraw – Transfers money from the user's balance.
+3. Show Balance – Displays the current account balance.
+How does it work?
+- Deploy the smart contract using Remix IDE.
+- Call the deposit function with an ETH value.
+- The contract updates the user's balance.
+- Call withdraw to withdraw the required amount.
+- Call showBalance to check the updated balance.
+
+Important Solidity keywords:
+Keyword		Meaning
+contract	Defines a smart contract
+mapping	Stores key-value pairs
+public	Allows external access
+payable	Allows receiving Ether
+require()	Checks a condition
+view	Reads data without modifying blockchain state
+msg.sender	Address of the caller
+msg.value	Amount of Ether sent with a transaction
+
+What is Remix IDE?
+
+Remix is an online development environment used to write, compile, deploy, and test Solidity smart contracts.
+
+What to tell the examiner:
+
+"We created a smart contract using Solidity in Remix IDE. It uses a mapping to store account balances and provides deposit, withdraw, and showBalance functions."

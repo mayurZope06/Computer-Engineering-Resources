@@ -1,0 +1,93 @@
+Implement the K-Nearest Neighbors algorithm on the diabetes.csv dataset. Compute the confusion matrix, accuracy, error rate, precision and recall. 
+o	Dataset link: https://www.kaggle.com/datasets/abdallamahgoub/diabetes
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import precision_score, recall_score
+
+# Load dataset
+data = pd.read_csv("diabetes.csv")
+
+# Separate features and target
+X = data.drop("Outcome", axis=1)
+y = data["Outcome"]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# Feature scaling
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Apply KNN algorithm
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Performance evaluation
+cm = confusion_matrix(y_test, y_pred)
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+
+print("Confusion Matrix:")
+print(cm)
+
+print("Accuracy:", round(accuracy * 100, 2), "%")
+print("Error Rate:", round(error_rate * 100, 2), "%")
+print("Precision:", round(precision, 4))
+print("Recall:", round(recall, 4))
+
+
+What is the objective?
+
+To predict whether a person has diabetes or not using medical data.
+
+What is KNN?
+
+KNN is a supervised learning algorithm that classifies a new data point based on the majority class of its nearest neighbors.
+
+How does it work?
+1. Load the diabetes dataset.
+2. Separate input features and target variable.
+3. Split the dataset into training and testing data.
+4. Apply feature scaling.
+5. Train the KNN classifier.
+6. Predict the result and calculate evaluation metrics.
+Important formula – Euclidean Distance:
+
+d=\sqrt{\sum_{i=1}^{n}(x_i-y_i)^2}
+
+
+It calculates the distance between two data points.
+
+Evaluation Metrics:
+Metric		Meaning
+Accuracy	Overall correct predictions
+Error Rate	Overall incorrect predictions
+Precision	How many predicted positives are actually positive
+Recall		How many actual positives are correctly identified
+
+Important formulas:
+
+Accuracy={TP+TN} / {TP+TN+FP+FN}
+
+Error Rate=1-Accuracy
+
+Precision={TP} / {TP+FP}
+
+Recall={TP} / {TP+FN}
+
+
+What to tell the examiner:
+
+"We applied KNN to the diabetes dataset. The algorithm calculates distances between data points and classifies them based on their nearest neighbors. We evaluated it using accuracy, error rate, precision, recall, and confusion matrix."

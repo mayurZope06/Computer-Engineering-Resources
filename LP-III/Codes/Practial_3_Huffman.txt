@@ -1,0 +1,141 @@
+Write a program to implement Huffman Encoding using a greedy strategy.
+
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+struct Node {
+    char ch;
+    int freq;
+    Node *left, *right;
+
+    Node(char c, int f) {
+        ch = c;
+        freq = f;
+        left = right = nullptr;
+    }
+};
+
+struct Compare {
+    bool operator()(Node* a, Node* b) {
+        return a->freq > b->freq;
+    }
+};
+
+// Generate Huffman Codes
+void printCodes(Node* root, string code) {
+    if (root == nullptr)
+        return;
+
+    if (root->left == nullptr && root->right == nullptr) {
+        cout << root->ch << " : " << code << endl;
+    }
+
+    printCodes(root->left, code + "0");
+    printCodes(root->right, code + "1");
+}
+
+int main() {
+    int n;
+
+    cout << "Enter number of characters: ";
+    cin >> n;
+
+    priority_queue<Node*, vector<Node*>, Compare> pq;
+
+    cout << "Enter character and frequency:\n";
+
+    for (int i = 0; i < n; i++) {
+        char ch;
+        int freq;
+        cin >> ch >> freq;
+
+        pq.push(new Node(ch, freq));
+    }
+
+    // Build Huffman Tree
+    while (pq.size() > 1) {
+        Node* left = pq.top();
+        pq.pop();
+
+        Node* right = pq.top();
+        pq.pop();
+
+        Node* parent = new Node('$',
+                                left->freq + right->freq);
+
+        parent->left = left;
+        parent->right = right;
+
+        pq.push(parent);
+    }
+
+    cout << "\nHuffman Codes:\n";
+    printCodes(pq.top(), "");
+
+    return 0;
+}
+
+
+//Output
+Enter number of characters: 5
+Enter character and frequency:
+A 5
+B 9
+C 12
+D 13
+E 16
+
+Huffman Codes:
+E : 00
+C : 01
+D : 10
+A : 110
+B : 111
+
+Time Complexity: \(O(n\log n)\)
+
+Space Complexity: \(O(n)\)
+
+What is Huffman Encoding?
+
+Huffman Encoding is a lossless data compression technique that assigns shorter binary codes to frequently occurring characters and longer codes to less frequent characters.
+
+How does it work?
+1. Calculate the frequency of each character.
+2. Insert all characters into a min-priority queue.
+3. Select the two nodes with the lowest frequencies.
+4. Combine them into a new node.
+5. Repeat until only one node remains.
+6. Generate binary codes by traversing the tree: left = 0, right = 1.
+
+		[ 100 ]
+                    /       \
+                 0 /         \ 1
+                  /           \
+             ( A: 45 )      [ 55 ]
+              "0"          /      \
+                        0 /        \ 1
+                         /          \
+                    [ 25 ]          [ 30 ]
+                   /      \        /      \
+                0 /        \ 1  0 /        \ 1
+                 /          \    /          \
+            ( B: 13 )    ( C: 12 ) ( D: 16 )  [ 14 ]
+             "100"        "101"     "110"    /      \
+                                          0 /        \ 1
+                                           /          \
+                                      ( E: 9 )     ( F: 5 )
+                                       "1110"       "1111"
+
+
+Important terms:
+- Min Heap: A data structure that provides the smallest element first.
+- Prefix Code: No code is the prefix of another code.
+- Lossless Compression: Original data can be recovered without losing information.
+Complexity: \(O(n\log n)\) time and \(O(n)\) space.
+
+What to tell the examiner:
+
+"Huffman Encoding uses a greedy strategy. It repeatedly combines the two least frequent characters to construct an optimal prefix-code tree for lossless compression."

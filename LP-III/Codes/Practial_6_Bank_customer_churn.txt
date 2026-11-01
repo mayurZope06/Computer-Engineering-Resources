@@ -1,0 +1,110 @@
+Given a bank customer, build a neural network-based classifier that can determine whether they will leave or not in the next 6 months. 
+o	Dataset: Kaggle bank customer churn (10,000 samples, 14 features such as CustomerId, CreditScore, Geography, Gender, Age, Tenure, Balance). Link: https://www.kaggle.com/barelydedicated/bank-customer-churn-modeling
+o	Steps: 
+1.	Read the dataset.
+2.	Separate the feature and target sets, and split into training and test sets.
+3.	Normalize the train and test data.
+4.	Initialize and build the model. Identify points of improvement and implement them.
+5.	Print the accuracy score and confusion matrix (5 points).
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# 1. Read dataset
+data = pd.read_csv("Churn_Modelling.csv")
+
+print("Dataset Shape:", data.shape)
+
+# 2. Separate features and target
+X = data.drop(
+    columns=["RowNumber", "CustomerId", "Surname", "Exited"]
+)
+y = data["Exited"]
+
+# Identify numerical and categorical columns
+num_cols = X.select_dtypes(include=["int64", "float64"]).columns
+cat_cols = X.select_dtypes(include=["object"]).columns
+
+# Divide dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# 3. Normalize numerical data and encode categorical data
+preprocessor = ColumnTransformer([
+    ("num", StandardScaler(), num_cols),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols)
+])
+
+# 4. Build Neural Network Model
+model = Pipeline([
+    ("preprocessor", preprocessor),
+    ("classifier", MLPClassifier(
+        hidden_layer_sizes=(64, 32),
+        activation="relu",
+        solver="adam",
+        max_iter=300,
+        early_stopping=True,
+        random_state=42
+    ))
+])
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict test data
+y_pred = model.predict(X_test)
+
+# 5. Evaluate model
+print("\nAccuracy:", round(accuracy_score(y_test, y_pred) * 100, 2), "%")
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+
+What is Customer Churn?
+
+Customer churn means a customer stops using the services of a company or bank.
+
+Our objective is to predict whether a customer will leave or stay.
+
+What is a Neural Network?
+
+A Neural Network is a machine learning model inspired by the human brain. It consists of interconnected neurons arranged in layers.
+
+How does the algorithm work?
+1. Load the bank customer dataset.
+2. Separate input features and target variable (Exited).
+3. Split the data into training and testing sets.
+4. Normalize numerical features and encode categorical features.
+5. Train the neural network model.
+6. Predict customer churn and calculate accuracy and confusion matrix.
+
+Important terms:
+- Input Layer: Accepts customer information.
+- Hidden Layer: Learns patterns from the data.
+- Output Layer: Predicts whether the customer will leave or stay.
+- Activation Function: Introduces non-linearity into the model.
+- Epoch: One complete pass through the training dataset.
+Dataset features: Age, Gender, Geography, Credit Score, Balance, Tenure, etc.
+
+Target variable: Exited (0 = Stayed, 1 = Left).
+
+What is a Confusion Matrix?
+
+A table that compares actual predictions with predicted results.
+	Predicted 0	Predicted 1
+Actual 0	TN	FP
+Actual 1	FN	TP
+
+What to tell the examiner:
+
+"We developed a neural network classifier to predict bank customer churn. We trained the model using customer information and evaluated its performance using accuracy and a confusion matrix."
+
+Important: The dataset records whether a customer exited. The six-month prediction is the practical's intended application, but the dataset alone does not establish a six-month prediction horizon.

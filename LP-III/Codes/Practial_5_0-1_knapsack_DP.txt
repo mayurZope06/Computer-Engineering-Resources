@@ -1,0 +1,94 @@
+Write a program to solve a 0-1 Knapsack problem using dynamic programming or branch and bound strategy.
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, capacity;
+
+    cout << "Enter number of items: ";
+    cin >> n;
+
+    vector<int> weight(n), value(n);
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter weight and value of item "
+             << i + 1 << ": ";
+        cin >> weight[i] >> value[i];
+    }
+
+    cout << "Enter knapsack capacity: ";
+    cin >> capacity;
+
+    // Initialize DP table with zeros
+    vector<vector<int>> dp(
+        n + 1, vector<int>(capacity + 1, 0)
+    );
+
+    // Dynamic Programming
+    for (int i = 1; i <= n; i++) {
+        for (int w = 0; w <= capacity; w++) {
+
+            if (weight[i - 1] <= w) {
+                dp[i][w] = max(
+                    value[i - 1] +
+                    dp[i - 1][w - weight[i - 1]],
+
+                    dp[i - 1][w]
+                );
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+
+    cout << "\nMaximum Value: "
+         << dp[n][capacity] << endl;
+
+    return 0;
+}
+
+
+// Output
+Enter number of items: 3
+Enter weight and value of item 1: 10 60
+Enter weight and value of item 2: 20 100
+Enter weight and value of item 3: 30 120
+Enter knapsack capacity: 50
+
+Maximum Value: 220
+
+- Time Complexity: \(O(n \times W)\)
+- Space Complexity: \(O(n \times W)\)
+Where:
+- \(n\) = Number of items.
+- \(W\) = Knapsack capacity.
+
+What is 0-1 Knapsack?
+
+It is an optimization problem where each item can either be selected completely or rejected. We cannot take fractions of items.
+
+How does it work?
+1. Create a DP table.
+2. Consider each item one by one.
+3. Check whether the item can fit in the current capacity.
+4. Compare two choices: include the item or exclude it.
+5. Store the maximum value in the DP table.
+Important recurrence formula:
+
+DP[i][w]= max(DP[i-1][w], v_i+DP[i-1][w-w_i])
+
+The second choice is considered only if the item fits.
+
+Difference between Fractional and 0-1 Knapsack:
+Fractional Knapsack	0-1 Knapsack
+Greedy method		Dynamic Programming
+Fractions allowed	Fractions not allowed
+Sort by value/weight ratio	Use DP table
+\(O(n\log n)\)		\(O(nW)\)
+
+What to tell the examiner:
+
+"In 0-1 Knapsack, every item is either selected or rejected. We use dynamic programming to compare both possibilities and obtain the maximum value."

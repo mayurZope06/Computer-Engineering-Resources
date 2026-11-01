@@ -1,0 +1,144 @@
+## BC-4: Survey Report on Types of Blockchains and Their Real-Time Use Cases
+
+Aim: To study different types of blockchain technology and understand their real-world applications.
+
+### 1. Introduction
+
+Blockchain is a distributed digital ledger that stores transactions in blocks. These blocks are connected using cryptographic techniques, making recorded information difficult to modify. Blockchain provides transparency, security, and decentralization.
+
+### 2. Types of Blockchains
+
+1\. Public Blockchain
+
+- Open to everyone.
+- Anyone can participate in transactions and network validation according to network rules.
+- Provides transparency and decentralization.
+- Examples: Bitcoin and Ethereum.
+
+2\. Private Blockchain
+
+- Controlled by a single organization.
+- Only authorized users can access the network.
+- Provides privacy and controlled access.
+- Example: Hyperledger Fabric in enterprise applications.
+
+3\. Consortium Blockchain
+
+- Managed by a group of organizations.
+- Access is restricted to selected participants.
+- Suitable for collaboration between multiple organizations.
+- Example: Banking and supply chain networks.
+
+4\. Hybrid Blockchain
+
+- Combines public and private blockchain features.
+- Sensitive information remains private while selected information can be publicly verified.
+- Provides flexibility and controlled transparency.
+- Example: Enterprise record management systems.
+
+### 3. Real-Time Use Cases of Blockchain
+
+| Application      | Use Case                                        |
+| ---------------- | ----------------------------------------------- |
+| Banking          | Secure cryptocurrency transactions and payments |
+| Healthcare       | Secure sharing of medical records               |
+| Supply Chain     | Tracking products from manufacturer to customer |
+| Education        | Verification of certificates and degrees        |
+| Voting           | Recording votes using blockchain                |
+| Real Estate      | Maintaining property ownership records          |
+| Digital Identity | Secure identity verification                    |
+| Smart Contracts  | Automatic execution of agreements               |
+
+### 4. Advantages of Blockchain
+
+1. Provides transparency in transactions.
+2. Improves data security.
+3. Reduces the risk of unauthorized modification.
+4. Supports decentralized applications.
+5. Provides traceability of transactions.
+6. Automates processes using smart contracts.
+
+### 5. Limitations of Blockchain
+
+1. High transaction costs on some networks.
+2. Scalability and performance challenges.
+3. Requires technical knowledge.
+4. Privacy and regulatory concerns.
+5. Energy consumption can be high in some consensus mechanisms.
+
+### 6. Conclusion
+
+Thus, different types of blockchain technology were studied along with their real-world applications. Blockchain provides secure, transparent, and reliable solutions in various industries such as banking, healthcare, education, and supply chain management.
+
+### 7. References
+
+1. [Bitcoin Official Website](https://bitcoin.org/?utm_source=chatgpt.com)
+2. [Ethereum Official Website](https://ethereum.org/?utm_source=chatgpt.com)
+3. [Hyperledger Foundation](https://www.hyperledger.org/?utm_source=chatgpt.com)
+4. [IBM Blockchain](https://www.ibm.com/think/topics/blockchain?utm_source=chatgpt.com)
+
+
+
+
+
+What is Blockchain?
+
+Blockchain is a distributed digital ledger that stores transactions in blocks connected using cryptographic techniques.
+
+Four Types of Blockchain:
+
+
+
+
+
+
+
+
+
+1. Public Blockchain
+
+Anyone can participate according to network rules.
+
+Example: Bitcoin, Ethereum.
+
+2. Private Blockchain
+
+Controlled by one organization with restricted access.
+
+Example: Enterprise blockchain networks.
+
+3. Consortium Blockchain
+
+Managed by multiple selected organizations.
+
+Example: Banking networks.
+
+4. Hybrid Blockchain
+
+Combines public and private blockchain features.
+
+Example: Enterprise record management.
+
+
+Real-time applications:
+Industry	Application
+Banking	Secure transactions
+Healthcare	Medical record management
+Education	Certificate verification
+Supply Chain	Product tracking
+Voting	Digital voting records
+Real Estate	Property records
+
+Advantages:
+- Transparency
+- Security
+- Traceability
+- Decentralization
+Limitations:
+- Scalability
+- Transaction costs
+- Privacy concerns
+- Regulatory challenges
+What to tell the examiner:
+
+"We studied four types of blockchain: public, private, consortium, and hybrid. We also explored their applications in banking, healthcare, education, supply chain, and voting."

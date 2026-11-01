@@ -1,0 +1,81 @@
+Write a non-recursive and a recursive program to calculate Fibonacci numbers and analyze their time and space complexity.
+
+#include <iostream>
+using namespace std;
+
+// Non-recursive Fibonacci
+void fibonacciIterative(int n) {
+    int a = 0, b = 1, c;
+
+    cout << "Non-Recursive Fibonacci: ";
+
+    for (int i = 0; i < n; i++) {
+        cout << a << " ";
+        c = a + b;
+        a = b;
+        b = c;
+    }
+    cout << endl;
+}
+
+// Recursive Fibonacci
+int fibonacciRecursive(int n) {
+    if (n <= 1)
+        return n;
+
+    return fibonacciRecursive(n - 1) +
+           fibonacciRecursive(n - 2);
+}
+
+int main() {
+    int n;
+
+    cout << "Enter number of terms: ";
+    cin >> n;
+
+    if (n <= 0) {
+        cout << "Enter a positive number.";
+        return 0;
+    }
+
+    fibonacciIterative(n);
+
+    cout << "Recursive Fibonacci: ";
+    for (int i = 0; i < n; i++) {
+        cout << fibonacciRecursive(i) << " ";
+    }
+
+    cout << endl;
+
+    return 0;
+}
+
+
+Method	Time Complexity	Space Complexity
+Non-Recursive	\(O(n)\)	\(O(1)\)
+Recursive	\(O(2^n)\)	\(O(n)\)
+
+What is Fibonacci series?
+
+A series in which every number is the sum of the previous two numbers.
+
+Example:
+
+0, 1, 1, 2, 3, 5, 8, 13, 21...
+
+How does the algorithm work?
+- Non-recursive: Uses a loop and two variables to calculate the next number.
+- Recursive: A function calls itself to calculate the previous two Fibonacci numbers.
+Important formula:
+
+F(n)=F(n-1)+F(n-2)
+
+Complexity:
+Method	Time	Space
+Iterative	\(O(n)\)	\(O(1)\)
+Recursive	\(O(2^n)\)	\(O(n)\)
+
+What to tell the examiner:
+
+"We implemented Fibonacci using both iterative and recursive methods. The iterative method uses a loop, whereas recursion uses function calls. The iterative method is more efficient because it avoids repeated calculations."
+	

@@ -1,0 +1,115 @@
+Implement job sequencing with deadlines using a greedy method.
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Job {
+    char id;
+    int deadline;
+    int profit;
+};
+
+// Sort jobs in descending order of profit
+bool compare(Job a, Job b) {
+    return a.profit > b.profit;
+}
+
+int main() {
+    int n;
+
+    cout << "Enter number of jobs: ";
+    cin >> n;
+
+    Job jobs[n];
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter Job ID, Deadline and Profit: ";
+        cin >> jobs[i].id
+            >> jobs[i].deadline
+            >> jobs[i].profit;
+    }
+
+    sort(jobs, jobs + n, compare);
+
+    int maxDeadline = 0;
+
+    for (int i = 0; i < n; i++) {
+        maxDeadline = max(maxDeadline, jobs[i].deadline);
+    }
+
+    char slots[100];
+
+    for (int i = 0; i < maxDeadline; i++) {
+        slots[i] = '-';
+    }
+
+    int totalProfit = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = min(jobs[i].deadline, maxDeadline) - 1;
+             j >= 0; j--) {
+
+            if (slots[j] == '-') {
+                slots[j] = jobs[i].id;
+                totalProfit += jobs[i].profit;
+                break;
+            }
+        }
+    }
+
+    cout << "\nScheduled Jobs: ";
+
+    for (int i = 0; i < maxDeadline; i++) {
+        if (slots[i] != '-') {
+            cout << slots[i] << " ";
+        }
+    }
+
+    cout << "\nMaximum Profit: " << totalProfit << endl;
+
+    return 0;
+}
+
+
+//Output
+Enter number of jobs: 4
+Enter Job ID, Deadline and Profit: A 2 100
+Enter Job ID, Deadline and Profit: B 1 50
+Enter Job ID, Deadline and Profit: C 2 10
+Enter Job ID, Deadline and Profit: D 1 20
+
+Scheduled Jobs: B A
+Maximum Profit: 150
+
+Time Complexity: \(O(n\log n+nD)\), where \(D\) is the maximum deadline.
+Space Complexity: \(O(D)\) for job slots.
+
+What is Job Sequencing?
+
+It is a scheduling problem in which jobs have deadlines and profits. The objective is to maximize total profit.
+
+How does the algorithm work?
+1. Sort all jobs in descending order of profit.
+2. Select the job with the highest profit.
+3. Assign it to the latest available slot before its deadline.
+4. Repeat until all jobs are considered or no slots are available.
+Example:
+Job	Deadline	Profit
+A	2	100
+B	1	50
+C	2	10
+
+Selected jobs: B, A.
+
+Maximum profit = 150.
+
+What is Greedy Method?
+
+A technique that selects the best possible choice at each step, hoping to achieve the overall optimal solution.
+
+Complexity: \(O(n\log n+nD)\), where D is the maximum deadline.
+
+What to tell the examiner:
+
+"We sort jobs according to profit and schedule each job in the latest available slot before its deadline to maximize total profit."

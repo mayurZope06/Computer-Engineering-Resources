@@ -1,0 +1,110 @@
+## BC-1: Install MetaMask and Study Ether Spent per Transaction
+
+Aim: To install MetaMask and study the amount of Ether (ETH) spent during blockchain transactions.
+
+### Requirements
+
+- Google Chrome browser
+- MetaMask extension
+- Internet connection
+- Ethereum test network
+
+### Procedure
+
+1. Open the official website: [https://metamask.io/](https://metamask.io/?utm_source=chatgpt.com)
+2. Download and install the MetaMask browser extension.
+3. Open MetaMask and select Create a New Wallet.
+4. Set a password and securely save the Secret Recovery Phrase.
+5. Select an Ethereum test network.
+6. Obtain test ETH using an appropriate testnet faucet.
+7. Send a small amount of test ETH to another test account.
+8. Open the transaction details and observe the gas used and gas price.
+9. Calculate the transaction fee.
+
+### Formula
+
+Transaction Fee = {Gas Used} x {Gas Price} 
+
+For example:
+
+- Gas Used = 21,000
+- Gas Price = 10 Gwei
+
+ = 21000 x 10 
+
+ = 210000 Gwei
+
+ = 0.00021 ETH 
+
+### Sample Output
+
+```
+MetaMask Installed Successfully
+
+Wallet Created Successfully
+
+Network: Ethereum Test Network
+
+Transaction Details:
+From: Account 1
+To: Account 2
+Amount Sent: 0.001 ETH
+
+Gas Used: 21000
+Gas Price: 10 Gwei
+
+Transaction Fee: 0.00021 ETH
+Transaction Status: Successful
+```
+
+Note: This is illustrative output. Actual gas usage and fees depend on the transaction and network conditions.
+
+### Result
+
+Thus, MetaMask was successfully installed, and Ether transaction fees were studied by calculating gas usage and gas price.
+
+Precaution: Never share your private key or Secret Recovery Phrase. Use test ETH for this practical instead of real cryptocurrency.
+
+
+
+
+
+
+What is MetaMask?
+
+MetaMask is a cryptocurrency wallet that allows users to interact with Ethereum and other compatible blockchain networks.
+
+What is Ether (ETH)?
+
+Ether is the native cryptocurrency of the Ethereum blockchain.
+
+What is Gas?
+
+Gas is the unit used to measure the computational work required to execute a transaction on Ethereum.
+
+How does a transaction work?
+1. Install MetaMask.
+2. Create a wallet.
+3. Connect to a test network.
+4. Send test ETH to another account.
+5. Check transaction details.
+6. Calculate the transaction fee.
+Important formula:
+\[
+Transaction\ Fee=Gas\ Used\times Gas\ Price
+\]
+
+Example:
+- Gas Used = 21,000
+- Gas Price = 10 Gwei
+- Transaction Fee = 0.00021 ETH
+What is Gwei?
+
+Gwei is a smaller denomination of Ether.
+\[
+1 ETH=10^9 Gwei
+\]
+
+What to tell the examiner:
+
+"We installed MetaMask and performed a test transaction. We studied gas used and gas price to calculate the total transaction fee in Ether."

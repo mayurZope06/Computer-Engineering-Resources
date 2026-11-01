@@ -1,0 +1,64 @@
+Implement the Gradient Descent algorithm to find the local minima of a function. For example, find the local minima of y = (x+3)² starting from x = 2.
+
+# Gradient Descent Algorithm
+
+def function(x):
+    return (x + 3) ** 2
+
+def derivative(x):
+    return 2 * (x + 3)
+
+x = float(input("Enter starting point x: "))
+learning_rate = 0.1
+iterations = 20
+
+for i in range(iterations):
+    x = x - learning_rate * derivative(x)
+
+print("Minimum value of x =", round(x, 4))
+print("Minimum value of y =", round(function(x), 4))
+
+
+// Input = 2
+
+What is Gradient Descent?
+
+Gradient Descent is an optimization algorithm used to find the minimum value of a function by repeatedly updating its input in the direction opposite to the gradient.
+
+Given function: y=(x+3)^2
+Initial value: x=2
+
+How does it work?
+1. Start with an initial value of x.
+2. Calculate the derivative of the function.
+3. Update x using the learning rate.
+4. Repeat until the value approaches the minimum.
+Derivative:
+{dy} / {dx}=2(x+3)
+
+Update formula:
+x_{new}=x_{old}- alpha f'(x)
+
+Here, alpha is the learning rate.
+
+For example, if learning rate = 0.1:
+
+x_{new}=2-0.1(2(2+3))
+x_{new}=1
+
+The algorithm continues updating x until it approaches -3.
+
+Final Answer:
+- Minimum x = -3
+- Minimum y = 0
+What is Learning Rate?
+
+Learning rate controls how large a step the algorithm takes while moving towards the minimum.
+
+What happens if learning rate is too high?
+
+The algorithm may overshoot the minimum or fail to converge.
+
+What to tell the examiner:
+
+"We implemented Gradient Descent for the function (x+3)² starting from x=2. We calculated the derivative and repeatedly updated x using the learning rate until it approached the minimum point -3."

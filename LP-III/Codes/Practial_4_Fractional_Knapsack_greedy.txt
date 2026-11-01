@@ -1,0 +1,103 @@
+Write a program to solve a fractional Knapsack problem using a greedy method.
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Item {
+    int weight;
+    int value;
+    double ratio;
+};
+
+bool compare(Item a, Item b) {
+    return a.ratio > b.ratio;
+}
+
+int main() {
+    int n, capacity;
+
+    cout << "Enter number of items: ";
+    cin >> n;
+
+    Item items[n];
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter weight and value of item " << i + 1 << ": ";
+        cin >> items[i].weight >> items[i].value;
+
+        items[i].ratio =
+            (double)items[i].value / items[i].weight;
+    }
+
+    cout << "Enter knapsack capacity: ";
+    cin >> capacity;
+
+    // Sort items by value-to-weight ratio
+    sort(items, items + n, compare);
+
+    double totalValue = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (capacity == 0)
+            break;
+
+        if (items[i].weight <= capacity) {
+            capacity -= items[i].weight;
+            totalValue += items[i].value;
+        } else {
+            totalValue += items[i].ratio * capacity;
+            capacity = 0;
+        }
+    }
+
+    cout << "\nMaximum Value: " << totalValue << endl;
+
+    return 0;
+}
+
+
+//Output
+Enter number of items: 3
+Enter weight and value of item 1: 10 60
+Enter weight and value of item 2: 20 100
+Enter weight and value of item 3: 30 120
+Enter knapsack capacity: 50
+
+Maximum Value: 240
+
+Time Complexity: \(O(n\log n)\) due to sorting.
+
+Space Complexity: \(O(n)\) for storing items.
+
+What is Knapsack Problem?
+
+We are given items with weights and values. We need to maximize the total value without exceeding the knapsack capacity.
+
+How does it work?
+1. Calculate value-to-weight ratio for every item.
+2. Sort items in descending order of this ratio.
+3. Select items with the highest ratio first.
+4. If an entire item cannot fit, take only the required fraction.
+Formula:
+\[
+Ratio=\frac{Value}{Weight}
+\]
+
+Example:
+
+Capacity = 50 kg.
+Item	Weight	Value
+A	10	60
+B	20	100
+C	30	120
+
+Take A, B and 20 kg of C.
+
+Maximum value = 240.
+
+Complexity: \(O(n\log n)\).
+
+What to tell the examiner:
+
+"In Fractional Knapsack, we can take part of an item. We sort items according to their value-to-weight ratio and select the highest ratio first."

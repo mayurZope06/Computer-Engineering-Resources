@@ -1,0 +1,214 @@
+## BC-5: Create a Business Network Using Hyperledger
+
+Aim: To create a simple business network using Hyperledger Fabric and perform basic asset management operations.
+
+### Requirements
+
+- Node.js and npm
+- Docker Desktop
+- Hyperledger Fabric
+- Visual Studio Code
+- Hyperledger Fabric Test Network
+
+### 1. Smart Contract (Chaincode)
+
+Create a file named `business.js`.
+
+```
+
+'use strict';
+
+const { Contract } = require('fabric-contract-api');
+
+class BusinessNetwork extends Contract {
+
+    async createAsset(ctx, id, name, owner, value) {
+        const asset = {
+            ID: id,
+            Name: name,
+            Owner: owner,
+            Value: Number(value)
+        };
+
+        await ctx.stub.putState(
+            id,
+            Buffer.from(JSON.stringify(asset))
+        );
+
+        return JSON.stringify(asset);
+    }
+
+    async readAsset(ctx, id) {
+        const data = await ctx.stub.getState(id);
+
+        if (!data || data.length === 0) {
+            throw new Error('Asset not found');
+        }
+
+        return data.toString();
+    }
+
+    async updateAsset(ctx, id, name, owner, value) {
+        const data = await ctx.stub.getState(id);
+
+        if (!data || data.length === 0) {
+            throw new Error('Asset not found');
+        }
+
+        const asset = {
+            ID: id,
+            Name: name,
+            Owner: owner,
+            Value: Number(value)
+        };
+
+        await ctx.stub.putState(
+            id,
+            Buffer.from(JSON.stringify(asset))
+        );
+
+        return JSON.stringify(asset);
+    }
+
+    async deleteAsset(ctx, id) {
+        const data = await ctx.stub.getState(id);
+
+        if (!data || data.length === 0) {
+            throw new Error('Asset not found');
+        }
+
+        await ctx.stub.deleteState(id);
+
+        return 'Asset deleted successfully';
+    }
+}
+
+module.exports = BusinessNetwork;
+
+```
+
+### 2. Package File
+
+Create `package.json`.
+
+```
+
+{
+    "name": "business-network",
+    "version": "1.0.0",
+    "description": "Hyperledger Fabric Business Network",
+    "main": "business.js",
+    "dependencies": {
+        "fabric-contract-api": "^2.5.0"
+    }
+}
+
+```
+
+### 3. Execution Procedure
+
+1. Install Node.js and Docker Desktop.
+2. Set up the Hyperledger Fabric test network.
+3. Create the chaincode project and add `business.js` and `package.json`.
+4. Install the dependencies using:
+
+```
+npm install
+```
+
+5. Start the Fabric test network and create a channel.
+6. Deploy the chaincode using the Fabric test network scripts.
+7. Submit transactions to create, read, update, and delete business assets.
+
+Example Fabric test network commands:
+
+```
+cd fabric-samples/test-network
+
+./network.sh up createChannel -c mychannel -ca
+
+./network.sh deployCC \
+  -ccn business \
+  -ccp ../asset-transfer-basic/chaincode-javascript/ \
+  -ccl javascript
+```
+
+For this example, place the chaincode files in the directory specified by `-ccp`, and ensure its entry point exports the `BusinessNetwork` contract.
+
+### 4. Sample Output
+
+```
+Hyperledger Fabric Network Started
+
+Channel Created: mychannel
+
+Business Network Deployed Successfully
+
+Creating Asset:
+ID: A101
+Name: Laptop
+Owner: ABC Company
+Value: 50000
+
+Asset Created Successfully
+
+Asset Read Successfully
+
+Asset Updated Successfully
+
+Asset Deleted Successfully
+```
+
+Illustrative output: actual output depends on successful Fabric network setup and chaincode deployment.
+
+### Result
+
+Thus, a simple business network was created using Hyperledger Fabric. Basic asset operations such as creating, reading, updating, and deleting records were implemented using smart contracts.
+
+Note: Hyperledger Fabric is a permissioned blockchain platform. The above chaincode is a simple educational example; it does not include a complete business network configuration or production-level access control.
+
+
+
+
+What is Hyperledger?
+
+Hyperledger is an open-source project hosted by the Linux Foundation that provides enterprise blockchain frameworks.
+
+What is Hyperledger Fabric?
+
+Hyperledger Fabric is a permissioned blockchain platform designed for business networks.
+
+What is a Business Network?
+
+A business network is a group of organizations that share information and perform transactions with one another.
+
+How does it work?
+1. Set up the Hyperledger Fabric environment.
+2. Start the blockchain network.
+3. Create a channel.
+4. Write and deploy chaincode.
+5. Execute transactions to create, read, update, and delete assets.
+
+Important components:
+Component	Meaning
+Peer	Maintains ledger and executes chaincode
+Orderer	Orders transactions into blocks
+Channel	Private communication and ledger partition
+Chaincode	Smart contract in Hyperledger Fabric
+Ledger	Stores blockchain records
+Certificate Authority	Issues digital identities and certificates
+
+What is Chaincode?
+
+Chaincode is the smart contract program in Hyperledger Fabric that implements business logic.
+
+Difference between Ethereum and Hyperledger Fabric:
+Ethereum	Hyperledger Fabric
+Public or permissioned networks	Permissioned blockchain framework
+Uses Solidity commonly	Supports Go, Java, JavaScript
+Uses Ether for gas on public Ethereum	Does not use Ether
+Public Ethereum is open participation	Participants have known identities
+
+What to tell the examiner:
+
+"We created a business network using Hyperledger Fabric. We used chaincode to perform asset operations such as creating, reading, updating, and deleting records."

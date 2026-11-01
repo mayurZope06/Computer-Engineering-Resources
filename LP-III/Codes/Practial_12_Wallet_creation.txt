@@ -1,0 +1,85 @@
+## BC-2: Create Your Own Wallet Using MetaMask for Crypto Transactions
+
+Aim: To create a digital cryptocurrency wallet using MetaMask and understand its basic operations.
+
+### Requirements
+
+- Google Chrome browser
+- MetaMask browser extension
+- Internet connection
+
+### Procedure
+
+1. Open the official MetaMask website: [https://metamask.io/](https://metamask.io/?utm_source=chatgpt.com)
+2. Download and install the MetaMask extension.
+3. Open MetaMask and click on Create a New Wallet.
+4. Set a strong password for your wallet.
+5. Read and securely back up your Secret Recovery Phrase.
+6. Confirm the recovery phrase to complete wallet creation.
+7. Open the wallet and copy your public wallet address.
+8. Select an Ethereum network.
+9. Use the wallet address to receive cryptocurrency or send test ETH to another account.
+
+### Sample Output
+
+```
+MetaMask Wallet Creation
+
+Wallet Status: Successfully Created
+
+Wallet Address: 0x1234...abcd
+
+Network: Ethereum Test Network
+
+Account: Account 1
+
+Wallet Balance: 1.00 ETH
+
+Status: Wallet Ready for Transactions
+```
+
+Note: The wallet address and balance shown above are illustrative examples.
+
+### Result
+
+Thus, a MetaMask cryptocurrency wallet was successfully created, and its basic operations, including receiving and sending cryptocurrency, were studied.
+
+### Precautions
+
+- Never share your Secret Recovery Phrase or private key.
+- Use a strong wallet password.
+- Verify the recipient address before sending cryptocurrency.
+- Use test ETH for practical demonstrations.
+
+
+
+
+
+
+What is a Cryptocurrency Wallet?
+
+A cryptocurrency wallet is a digital wallet used to manage blockchain accounts and authorize transactions.
+
+Important terms:
+- Public Address: Used to receive cryptocurrency.
+- Private Key: Used to authorize transactions.
+- Secret Recovery Phrase: Used to recover the wallet.
+- Wallet Balance: Amount of cryptocurrency held by the account.
+
+
+How does it work?
+1. Install MetaMask.
+2. Create a new wallet.
+3. Set a password.
+4. Securely save the Secret Recovery Phrase.
+5. Copy the public wallet address.
+6. Use it to send or receive test cryptocurrency.
+Difference between Public Key and Private Key:
+Public Key				Private Key
+Used to derive a wallet address		Used to authorize transactions
+Can be shared				Must remain secret
+Used for verification			Provides control over assets
+
+What to tell the examiner:
+
+"We created a digital wallet using MetaMask. We studied its public address, private key, recovery phrase, and how cryptocurrency transactions are performed."

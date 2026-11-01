@@ -1,0 +1,76 @@
+Classify emails using binary classification: Normal State (Not Spam) and Abnormal State (Spam). Use K-Nearest Neighbors and Support Vector Machine, and analyze their performance. 
+o	Dataset: emails.csv on Kaggle. Link: https://www.kaggle.com/datasets/balaka18/email-spam-classification-dataset-csv
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Load dataset
+data = pd.read_csv("emails.csv")
+
+# Separate features and target
+X = data.drop(columns=["Prediction", "Email No."])
+y = data["Prediction"]
+
+# Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# KNN Classification
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+knn_pred = knn.predict(X_test)
+
+# SVM Classification
+svm = LinearSVC(random_state=42, max_iter=10000)
+svm.fit(X_train, y_train)
+svm_pred = svm.predict(X_test)
+
+# Evaluate performance
+print("KNN Accuracy:", round(accuracy_score(y_test, knn_pred) * 100, 2), "%")
+print("KNN Confusion Matrix:")
+print(confusion_matrix(y_test, knn_pred))
+
+print("\nSVM Accuracy:", round(accuracy_score(y_test, svm_pred) * 100, 2), "%")
+print("SVM Confusion Matrix:")
+print(confusion_matrix(y_test, svm_pred))
+
+
+What is Spam Detection?
+
+Spam detection is a binary classification problem that classifies emails into two categories:
+- Normal State (0): Not Spam.
+- Abnormal State (1): Spam.
+What is KNN?
+
+K-Nearest Neighbors is a supervised machine learning algorithm that classifies data based on the nearest data points.
+
+How KNN works:
+1. Select the value of K.
+2. Calculate the distance between the new data point and training points.
+3. Find the K nearest neighbors.
+4. Assign the class based on majority voting.
+
+What is SVM?
+
+Support Vector Machine is a supervised learning algorithm that finds the best separating boundary, called a hyperplane, between different classes.
+
+Difference between KNN and SVM:
+KNN					SVM
+Distance-based algorithm	Boundary-based algorithm
+Uses nearest neighbors		Uses hyperplane
+Simple to understand		Finds maximum-margin separation
+Lazy learning			Eager learning
+
+How do we compare performance?
+
+We calculate accuracy and compare the confusion matrices of both algorithms.
+
+Accuracy= ({Correct Predictions} / {Total Predictions}) x 100
+
+What to tell the examiner:
+
+"We used KNN and SVM to classify emails as spam or not spam. KNN uses distance and majority voting, whereas SVM separates classes using an optimal hyperplane. We compare both algorithms using accuracy."
