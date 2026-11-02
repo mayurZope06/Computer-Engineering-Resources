@@ -1,0 +1,400 @@
+"""
+==========================================================================
+ DAA PRACTICAL PROGRAMS (DAA-1 to DAA-5)  -  All in one file
+ How to run: save this file as  daa_all.py  and run:  python3 daa_all.py
+ A menu will let you choose which program to execute.
+==========================================================================
+"""
+
+import heapq
+import time
+from collections import Counter
+
+
+# ======================================================================
+# DAA-1 : Fibonacci (Non-recursive and Recursive) + Complexity Analysis
+# ======================================================================
+"""
+ANALYSIS
+--------
+Iterative (non-recursive):
+    Time  : O(n)   -> single loop running n times
+    Space : O(1)   -> only a few variables (a, b, next)
+
+Recursive (naive):
+    Recurrence: T(n) = T(n-1) + T(n-2) + O(1)
+    Time  : O(2^n) (tight bound is O(phi^n), phi = 1.618) -> exponential,
+            because the same subproblems are recomputed again and again.
+    Space : O(n)   -> maximum depth of the recursion call stack is n.
+"""
+
+
+def fib_iterative(n):
+    """Non-recursive Fibonacci. Time O(n), Space O(1)."""
+    if n == 0:
+        return 0
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+    return b
+
+
+def fib_recursive(n):
+    """Recursive Fibonacci. Time O(2^n), Space O(n) (call stack)."""
+    if n <= 1:
+        return n
+    return fib_recursive(n - 1) + fib_recursive(n - 2)
+
+
+def daa1():
+    print("\n===== DAA-1: Fibonacci (Iterative vs Recursive) =====")
+    n = int(input("Enter n (number of Fibonacci terms / position, n >= 0): "))
+    if n < 0:
+        print("Please enter a non-negative number.")
+        return
+
+    # Series using the non-recursive method
+    print("\nFibonacci series (non-recursive):")
+    print([fib_iterative(i) for i in range(n + 1)])
+
+    # Series using the recursive method
+    print("Fibonacci series (recursive):")
+    print([fib_recursive(i) for i in range(n + 1)])
+
+    # Timing comparison for F(n)
+    t1 = time.perf_counter()
+    r1 = fib_iterative(n)
+    t1 = time.perf_counter() - t1
+
+    t2 = time.perf_counter()
+    r2 = fib_recursive(n)
+    t2 = time.perf_counter() - t2
+
+    print(f"\nF({n}) using iterative method : {r1}   (time = {t1:.8f} s)")
+    print(f"F({n}) using recursive method : {r2}   (time = {t2:.8f} s)")
+
+    print("\n--- Complexity Analysis ---")
+    print("Iterative : Time = O(n)    , Space = O(1)")
+    print("Recursive : Time = O(2^n)  , Space = O(n)  (recursion stack)")
+    if n >= 35:
+        print("Note: recursive version becomes very slow for large n.")
+
+
+# ======================================================================
+# DAA-2 : Job Sequencing with Deadlines (Greedy)
+# ======================================================================
+"""
+GREEDY STRATEGY
+---------------
+1. Sort all jobs in decreasing order of profit.
+2. For each job, place it in the latest free time slot <= its deadline.
+3. If no free slot is available, skip the job.
+
+Time  : O(n^2) in worst case (n log n for sorting + n * maxDeadline for slots)
+Space : O(maxDeadline)
+"""
+
+
+def job_sequencing(jobs):
+    """jobs: list of (job_id, deadline, profit). Returns (schedule, total_profit)."""
+    jobs = sorted(jobs, key=lambda x: x[2], reverse=True)  # sort by profit desc
+    max_deadline = max(j[1] for j in jobs)
+    slots = [None] * (max_deadline + 1)  # slots[1..max_deadline]
+
+    total_profit = 0
+    for job_id, deadline, profit in jobs:
+        # find latest free slot on or before the deadline
+        for t in range(min(deadline, max_deadline), 0, -1):
+            if slots[t] is None:
+                slots[t] = (job_id, deadline, profit)
+                total_profit += profit
+                break
+    return slots, total_profit
+
+
+def daa2():
+    print("\n===== DAA-2: Job Sequencing with Deadlines (Greedy) =====")
+    n = int(input("Enter number of jobs: "))
+    jobs = []
+    for i in range(n):
+        print(f"Job {i + 1}:")
+        job_id = input("  Job ID/name : ").strip() or f"J{i + 1}"
+        deadline = int(input("  Deadline    : "))
+        profit = int(input("  Profit      : "))
+        jobs.append((job_id, deadline, profit))
+
+    slots, total = job_sequencing(jobs)
+
+    print("\nSelected job sequence (by time slot):")
+    sequence = []
+    for t in range(1, len(slots)):
+        if slots[t]:
+            print(f"  Slot {t}: Job {slots[t][0]} (deadline={slots[t][1]}, profit={slots[t][2]})")
+            sequence.append(slots[t][0])
+        else:
+            print(f"  Slot {t}: --- (empty)")
+    print("\nJob order :", " -> ".join(sequence))
+    print("Total profit :", total)
+    print("Complexity   : Time O(n^2), Space O(max deadline)")
+
+
+# ======================================================================
+# DAA-3 : Huffman Encoding (Greedy)
+# ======================================================================
+"""
+GREEDY STRATEGY
+---------------
+1. Count the frequency of each character.
+2. Put all characters in a min-heap (priority queue) keyed by frequency.
+3. Repeatedly remove the two nodes with the smallest frequency, merge them
+   into a new node (freq = sum), and insert it back.
+4. The last remaining node is the root of the Huffman tree.
+5. Left edge = '0', right edge = '1'; the path gives each character's code.
+
+Time  : O(n log n)  where n = number of unique characters
+Space : O(n)
+"""
+
+
+class HuffNode:
+    def __init__(self, char, freq, left=None, right=None):
+        self.char = char
+        self.freq = freq
+        self.left = left
+        self.right = right
+
+
+def build_huffman_tree(text):
+    freq = Counter(text)
+    heap = []
+    counter = 0  # tie-breaker so heap never compares HuffNode objects
+    for ch, f in freq.items():
+        heapq.heappush(heap, (f, counter, HuffNode(ch, f)))
+        counter += 1
+
+    while len(heap) > 1:
+        f1, _, n1 = heapq.heappop(heap)
+        f2, _, n2 = heapq.heappop(heap)
+        merged = HuffNode(None, f1 + f2, n1, n2)
+        heapq.heappush(heap, (f1 + f2, counter, merged))
+        counter += 1
+
+    return heap[0][2], freq
+
+
+def generate_codes(node, prefix="", codes=None):
+    if codes is None:
+        codes = {}
+    if node is None:
+        return codes
+    if node.char is not None:  # leaf node
+        codes[node.char] = prefix if prefix else "0"  # handles single-char text
+        return codes
+    generate_codes(node.left, prefix + "0", codes)
+    generate_codes(node.right, prefix + "1", codes)
+    return codes
+
+
+def huffman_decode(encoded, root):
+    result = []
+    if root.char is not None:  # only one unique character
+        return root.char * len(encoded)
+    node = root
+    for bit in encoded:
+        node = node.left if bit == "0" else node.right
+        if node.char is not None:
+            result.append(node.char)
+            node = root
+    return "".join(result)
+
+
+def daa3():
+    print("\n===== DAA-3: Huffman Encoding (Greedy) =====")
+    text = input("Enter the text to encode: ")
+    if not text:
+        print("Empty text entered.")
+        return
+
+    root, freq = build_huffman_tree(text)
+    codes = generate_codes(root)
+
+    print("\nCharacter | Frequency | Huffman Code")
+    print("-" * 36)
+    for ch in sorted(codes, key=lambda c: (len(codes[c]), c)):
+        shown = repr(ch) if ch.isspace() else ch
+        print(f"{shown:^9} | {freq[ch]:^9} | {codes[ch]}")
+
+    encoded = "".join(codes[ch] for ch in text)
+    decoded = huffman_decode(encoded, root)
+
+    original_bits = len(text) * 8
+    print("\nEncoded text :", encoded)
+    print("Decoded text :", decoded)
+    print(f"Original size: {original_bits} bits (8 bits per char)")
+    print(f"Encoded size : {len(encoded)} bits")
+    print(f"Space saved  : {100 * (1 - len(encoded) / original_bits):.2f}%")
+    print("Complexity   : Time O(n log n), Space O(n)")
+
+
+# ======================================================================
+# DAA-4 : Fractional Knapsack (Greedy)
+# ======================================================================
+"""
+GREEDY STRATEGY
+---------------
+1. Compute value/weight ratio for every item.
+2. Sort items by ratio in decreasing order.
+3. Take whole items while they fit; for the first item that does not fit,
+   take the fraction that fills the remaining capacity.
+
+Time  : O(n log n)  (dominated by sorting)
+Space : O(n)
+"""
+
+
+def fractional_knapsack(items, capacity):
+    """items: list of (name, weight, value). Returns (total_value, picks)."""
+    items = sorted(items, key=lambda x: x[2] / x[1], reverse=True)
+    total_value = 0.0
+    picks = []
+    remaining = capacity
+
+    for name, weight, value in items:
+        if remaining <= 0:
+            break
+        if weight <= remaining:
+            picks.append((name, weight, 1.0, value))
+            total_value += value
+            remaining -= weight
+        else:
+            fraction = remaining / weight
+            picks.append((name, remaining, fraction, value * fraction))
+            total_value += value * fraction
+            remaining = 0
+    return total_value, picks
+
+
+def daa4():
+    print("\n===== DAA-4: Fractional Knapsack (Greedy) =====")
+    n = int(input("Enter number of items: "))
+    items = []
+    for i in range(n):
+        print(f"Item {i + 1}:")
+        weight = float(input("  Weight : "))
+        value = float(input("  Value  : "))
+        if weight <= 0:
+            print("  Weight must be positive. Using 1 instead.")
+            weight = 1
+        items.append((f"Item{i + 1}", weight, value))
+    capacity = float(input("Enter knapsack capacity: "))
+
+    total, picks = fractional_knapsack(items, capacity)
+
+    print("\nItems taken (in order of value/weight ratio):")
+    for name, w, frac, val in picks:
+        print(f"  {name}: weight taken = {w:.2f}, fraction = {frac:.2f}, value = {val:.2f}")
+    print(f"\nMaximum value in knapsack = {total:.2f}")
+    print("Complexity: Time O(n log n), Space O(n)")
+
+
+# ======================================================================
+# DAA-5 : 0-1 Knapsack (Dynamic Programming)
+# ======================================================================
+"""
+DYNAMIC PROGRAMMING
+-------------------
+dp[i][w] = maximum value using the first i items with capacity w
+
+    if weight[i-1] <= w:
+        dp[i][w] = max( dp[i-1][w],  value[i-1] + dp[i-1][w - weight[i-1]] )
+    else:
+        dp[i][w] = dp[i-1][w]
+
+Traceback from dp[n][W] gives the items selected.
+
+Time  : O(n * W)
+Space : O(n * W)  (can be optimized to O(W) if only the max value is needed)
+"""
+
+
+def knapsack_01(weights, values, capacity):
+    n = len(weights)
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        for w in range(capacity + 1):
+            if weights[i - 1] <= w:
+                dp[i][w] = max(dp[i - 1][w],
+                               values[i - 1] + dp[i - 1][w - weights[i - 1]])
+            else:
+                dp[i][w] = dp[i - 1][w]
+
+    # traceback to find chosen items
+    chosen = []
+    w = capacity
+    for i in range(n, 0, -1):
+        if dp[i][w] != dp[i - 1][w]:
+            chosen.append(i)
+            w -= weights[i - 1]
+    chosen.reverse()
+    return dp[n][capacity], chosen, dp
+
+
+def daa5():
+    print("\n===== DAA-5: 0-1 Knapsack (Dynamic Programming) =====")
+    n = int(input("Enter number of items: "))
+    weights, values = [], []
+    for i in range(n):
+        print(f"Item {i + 1}:")
+        weights.append(int(input("  Weight (integer) : ")))
+        values.append(int(input("  Value            : ")))
+    capacity = int(input("Enter knapsack capacity (integer): "))
+
+    best, chosen, dp = knapsack_01(weights, values, capacity)
+
+    print("\nDP Table (rows = items 0..n, columns = capacity 0..W):")
+    print("      " + " ".join(f"{w:3d}" for w in range(capacity + 1)))
+    for i, row in enumerate(dp):
+        print(f"i={i:2d} " + " ".join(f"{x:3d}" for x in row))
+
+    print(f"\nMaximum value = {best}")
+    print("Items selected (1-indexed):", chosen if chosen else "None")
+    for i in chosen:
+        print(f"  Item {i}: weight = {weights[i - 1]}, value = {values[i - 1]}")
+    print("Total weight used =", sum(weights[i - 1] for i in chosen))
+    print("Complexity: Time O(n*W), Space O(n*W)")
+
+
+# ======================================================================
+# MAIN MENU
+# ======================================================================
+def main():
+    programs = {
+        "1": ("DAA-1: Fibonacci (Recursive & Non-recursive)", daa1),
+        "2": ("DAA-2: Job Sequencing with Deadlines", daa2),
+        "3": ("DAA-3: Huffman Encoding", daa3),
+        "4": ("DAA-4: Fractional Knapsack", daa4),
+        "5": ("DAA-5: 0-1 Knapsack (DP)", daa5),
+    }
+    while True:
+        print("\n" + "=" * 50)
+        print("        DAA PRACTICAL PROGRAMS - MENU")
+        print("=" * 50)
+        for key, (title, _) in programs.items():
+            print(f"  {key}. {title}")
+        print("  0. Exit")
+        choice = input("Enter your choice: ").strip()
+        if choice == "0":
+            print("Goodbye!")
+            break
+        elif choice in programs:
+            try:
+                programs[choice][1]()
+            except ValueError:
+                print("Invalid input! Please enter numbers where required.")
+        else:
+            print("Invalid choice, try again.")
+
+
+if __name__ == "__main__":
+    main()
