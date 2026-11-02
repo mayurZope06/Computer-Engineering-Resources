@@ -91,3 +91,31 @@ Recall={TP} / {TP+FN}
 What to tell the examiner:
 
 "We applied KNN to the diabetes dataset. The algorithm calculates distances between data points and classifies them based on their nearest neighbors. We evaluated it using accuracy, error rate, precision, recall, and confusion matrix."
+
+# Calculate TP, TN, FP, FN
+TN, FP, FN, TP = cm.ravel()
+
+// or 
+
+TN = cm[0][0]
+FP = cm[0][1]
+FN = cm[1][0]
+TP = cm[1][1]
+
+print("True Positive (TP):", TP)
+print("True Negative (TN):", TN)
+print("False Positive (FP):", FP)
+print("False Negative (FN):", FN)
+
+# Calculate metrics manually
+total = TP + TN + FP + FN
+
+accuracy = (TP + TN) / total
+error_rate = (FP + FN) / total
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+
+print("Accuracy:", round(accuracy * 100, 2), "%")
+print("Error Rate:", round(error_rate * 100, 2), "%")
+print("Precision:", round(precision, 4))
+print("Recall:", round(recall, 4))
